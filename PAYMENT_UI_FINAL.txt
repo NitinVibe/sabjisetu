@@ -1,0 +1,7 @@
+FINAL PAYMENT UI
+
+Sales/Supply: Cash, UPI, Bank
+UPI: Take Photo + Upload Screenshot
+Bank: Transaction ID required
+Sales table: Method column + clickable payment details
+Payments & Due: same payment options

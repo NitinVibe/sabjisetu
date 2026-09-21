@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
+  min-height: 100%;
+  width: 100%;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  background: #f9fafb;
+  -webkit-text-size-adjust: 100%;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+input, select, textarea {
+  max-width: 100%;
+}
+
+img, svg, video, canvas {
+  max-width: 100%;
+}
+
+/* Touch-friendly controls on narrow screens. */
+@media (max-width: 767px) {
+  button, select, input[type="date"], input[type="number"] {
+    min-height: 42px;
+  }
+
+  table {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Prevent long business/customer names from forcing horizontal overflow. */
+.break-anywhere {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Hide the owner avatar on very narrow phones only. */
+@media (max-width: 399px) {
+  .profile-avatar {
+    display: none !important;
+  }
+}
+
+
+/* Long business forms: keep modal headers fixed and make the body reliably scrollable. */
+.modal-scroll { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
+@media (max-width: 640px) { .modal-scroll { max-height: calc(100dvh - 7rem) !important; } }
