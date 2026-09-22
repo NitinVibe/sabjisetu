@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { pool } from "./db.js";
 import { rebuildStock } from "./routes/helpers.js";
+import fs from "fs/promises";
 
 import { mandiPurchasesRouter } from "./routes/mandiPurchases.js";
 import { localPurchasesRouter } from "./routes/localPurchases.js";
@@ -68,6 +69,15 @@ const PORT = process.env.PORT || 4000;
 
 async function startServer() {
   try {
+    // Ensure schema exists by running the bundled schema.sql once.
+    try {
+      const schemaSql = await fs.readFile(new URL("./schema.sql", import.meta.url), "utf8");
+      // Execute schema; CREATE TABLE IF NOT EXISTS statements are safe to run repeatedly.
+      await pool.query(schemaSql);
+      console.log('[server] Applied schema.sql');
+    } catch (e) {
+      console.warn('[server] Could not apply schema.sql automatically:', e.message);
+    }
     // Safe runtime migration for existing databases. This keeps the app usable
     // when an older stock table exists without the new user-entered status field.
     await pool.query(`CREATE EXTENSION IF NOT EXISTS pgcrypto`);
