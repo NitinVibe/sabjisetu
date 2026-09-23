@@ -1092,7 +1092,7 @@ function MultiPurchaseLines({ lines, setLines, masters }) {
   const total = lines.reduce((sum, line) => {
     const qty = Number(line.quantityValue || 0), rate = Number(line.rate || 0);
     const unit = units.find(u => String(u.symbol) === String(line.quantityUnit));
-    return sum + qty * Number(unit?.kg_multiplier || 1) * rate;
+    return sum + qty * Number(unit?.kgMultiplier || 1) * rate;
   }, 0);
   return <div className="space-y-3">
     <div className="flex items-center justify-between">
@@ -1101,7 +1101,7 @@ function MultiPurchaseLines({ lines, setLines, masters }) {
     </div>
     {lines.map((line, index) => {
       const unit = units.find(u => String(u.symbol) === String(line.quantityUnit));
-      const amount = Number(line.quantityValue || 0) * Number(unit?.kg_multiplier || 1) * Number(line.rate || 0);
+      const amount = Number(line.quantityValue || 0) * Number(unit?.kgMultiplier || 1) * Number(line.rate || 0);
       return <div key={index} className="rounded-xl border border-gray-200 bg-gray-50/60 p-3">
         <div className="flex items-center justify-between mb-2"><span className="text-xs font-semibold text-gray-500">ITEM {index + 1}</span>{lines.length > 1 && <button type="button" onClick={() => removeLine(index)} className="p-1.5 rounded-lg text-red-500 hover:bg-red-50" title="Remove item"><Trash2 size={14}/></button>}</div>
         <Field label="Item"><ItemAutocomplete items={masters?.items || []} value={line.item} onChange={v => update(index,{item:v, specification:""})} specification={line.specification} onSpecificationChange={v => update(index,{specification:v})}/></Field>
@@ -1124,13 +1124,13 @@ function MultiSaleLines({ lines, setLines, masters }) {
   const total = lines.reduce((sum, line) => {
     const qty = Number(line.quantityValue || 0), rate = Number(line.rate || 0);
     const unit = units.find(u => String(u.symbol) === String(line.quantityUnit));
-    return sum + qty * Number(unit?.kg_multiplier || 1) * rate;
+    return sum + qty * Number(unit?.kgMultiplier || 1) * rate;
   }, 0);
   return <div className="space-y-3">
     <div className="flex items-center justify-between"><div><p className="text-sm font-semibold text-gray-800">Sale Items</p><p className="text-xs text-gray-500">Add multiple vegetables to the same customer sale.</p></div><button type="button" onClick={addLine} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium bg-green-50 text-green-700 hover:bg-green-100"><Plus size={14}/> Add Item</button></div>
     {lines.map((line, index) => {
       const unit = units.find(u => String(u.symbol) === String(line.quantityUnit));
-      const amount = Number(line.quantityValue || 0) * Number(unit?.kg_multiplier || 1) * Number(line.rate || 0);
+      const amount = Number(line.quantityValue || 0) * Number(unit?.kgMultiplier || 1) * Number(line.rate || 0);
       return <div key={index} className="rounded-xl border border-gray-200 bg-gray-50/60 p-3">
         <div className="flex items-center justify-between mb-2"><span className="text-xs font-semibold text-gray-500">ITEM {index + 1}</span>{lines.length > 1 && <button type="button" onClick={() => removeLine(index)} className="p-1.5 rounded-lg text-red-500 hover:bg-red-50" title="Remove item"><Trash2 size={14}/></button>}</div>
         <Field label="Item"><ItemAutocomplete items={masters?.items || []} value={line.item} onChange={v => update(index,{item:v, specification:""})} specification={line.specification} onSpecificationChange={v => update(index,{specification:v})}/></Field>
@@ -2161,6 +2161,13 @@ function PaymentsPage({
       return;
     }
 
+    if (form.saleId && Number(form.amount) > saleDue + 0.005) {
+      alert(
+        `Payment cannot be more than the remaining sale due of ₹${saleDue.toLocaleString("en-IN")}.`
+      );
+      return;
+    }
+
     if (
       form.paymentMethod === "Bank" &&
       !String(form.transactionId || "").trim()
@@ -2171,57 +2178,34 @@ function PaymentsPage({
 
     setSaving(true);
 
-    try {
-      const body = new FormData();
+try {
+  await api.createPayment({
+    customerId: form.customerId,
+    saleId: form.saleId || null,
+    date: form.date,
+    amount: Number(form.amount),
+    note: form.note || "",
+    paymentMethod: form.paymentMethod,
+    paymentProof: form.paymentProof || null,
+    transactionId: String(form.transactionId || "").trim() || null,
+  });
 
-      body.append("customer_id", form.customerId);
-      if (form.saleId) body.append("sale_id", form.saleId);
-      body.append("date", form.date);
-      body.append("amount", form.amount);
-      body.append("note", form.note || "");
-      body.append("payment_method", form.paymentMethod);
-
-      if (form.transactionId) {
-        body.append("transaction_id", form.transactionId);
-      }
-
-      if (form.paymentProof) {
-        body.append("payment_proof", form.paymentProof);
-      }
-
-      const res = await fetch("/api/payments", {
-        method: "POST",
-        body
-      });
-
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text || "Failed to save payment");
-      }
-
-      resetForm();
-      await refresh?.();
-      alert("Payment added successfully");
-    } catch (err) {
-      console.error(err);
-      alert(err.message || "Failed to save payment");
-    } finally {
-      setSaving(false);
-    }
+  resetForm();
+  await refresh?.();
+  alert("Payment added successfully");
+} catch (err) {
+  console.error(err);
+  alert(err.message || "Failed to save payment");
+} finally {
+  setSaving(false);
+}
   };
 
   const deletePayment = async id => {
-    if (!window.confirm("Delete this payment?")) return;
+  if (!window.confirm("Delete this payment?")) return;
 
     try {
-      const res = await fetch(`/api/payments/${id}`, {
-        method: "DELETE"
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to delete payment");
-      }
-
+      await api.removePayment(id);
       setDetails(null);
       await refresh?.();
     } catch (err) {
@@ -2230,13 +2214,7 @@ function PaymentsPage({
     }
   };
 
-  const takePhoto = () => {
-    document.getElementById("payment-camera-input")?.click();
-  };
 
-  const uploadScreenshot = () => {
-    document.getElementById("payment-file-input")?.click();
-  };
 
   return (
     <div className="space-y-6">
@@ -2293,17 +2271,23 @@ function PaymentsPage({
               >
                 <option value="">General payment</option>
 
-                {dueSales.map(s => (
-                  <option key={s.id} value={s.id}>
-                    {s.date || ""} — ₹
-                    {Number(
+                {dueSales.map(s => {
+                  const remaining = Math.max(
+                    0,
+                    Number(
                       s.total ||
-                        s.amount ||
-                        s.grand_total ||
-                        0
-                    ).toLocaleString("en-IN")}
-                  </option>
-                ))}
+                      s.amount ||
+                      s.grand_total ||
+                      0
+                    ) - salePaid(s.id)
+                  );
+
+                  return (
+                    <option key={s.id} value={s.id}>
+                      {s.date || ""} — ₹{remaining.toLocaleString("en-IN")}
+                    </option>
+                  );
+                })}
               </select>
             </div>
 
@@ -2386,68 +2370,15 @@ function PaymentsPage({
           </div>
 
           {form.paymentMethod === "UPI" && (
-            <div className="border rounded-xl p-4 space-y-3">
-
-              <div className="font-medium">
-                UPI Payment Proof
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-
-                <button
-                  type="button"
-                  onClick={takePhoto}
-                  className="px-4 py-2 border rounded-lg"
-                >
-                  Take Photo
-                </button>
-
-                <button
-                  type="button"
-                  onClick={uploadScreenshot}
-                  className="px-4 py-2 border rounded-lg"
-                >
-                  Upload Screenshot
-                </button>
-
-              </div>
-
-              <input
-                id="payment-camera-input"
-                type="file"
-                accept="image/*"
-                capture="environment"
-                className="hidden"
-                onChange={e =>
-                  setForm({
-                    ...form,
-                    paymentProof:
-                      e.target.files?.[0] || null
-                  })
-                }
-              />
-
-              <input
-                id="payment-file-input"
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={e =>
-                  setForm({
-                    ...form,
-                    paymentProof:
-                      e.target.files?.[0] || null
-                  })
-                }
-              />
-
-              {form.paymentProof && (
-                <div className="text-sm text-gray-600">
-                  Selected: {form.paymentProof.name}
-                </div>
-              )}
-
-            </div>
+            <PaymentProofField
+              value={form.paymentProof}
+              onChange={value =>
+                setForm({
+                  ...form,
+                  paymentProof: value
+                })
+              }
+            />
           )}
 
           {form.paymentMethod === "Bank" && (
