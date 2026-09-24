@@ -923,7 +923,8 @@ function PaymentProofField({ value, onChange }) {
   </>;
 }
 
-const inputCls = "w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-400";
+const inputCls =
+  "w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-[var(--theme-primary-soft)] focus:border-[var(--theme-primary)]";
 
 function rowDate(row) {
   const v = row?.date || row?.dueDate || row?.created_at || row?.time;
@@ -1017,7 +1018,7 @@ function ItemAutocomplete({ items = [], value, onChange, specification = "", onS
             <button
               type="button"
               key={item.id ?? `${item.nameEn}-${item.nameHi}`}
-              className="block w-full text-left px-3 py-2.5 hover:bg-green-50 active:bg-green-100 text-sm cursor-pointer select-none"
+              className="block w-full text-left px-3 py-2.5 hover:bg-[var(--theme-primary-soft-hover)] active:bg-[var(--theme-primary-soft)] text-sm cursor-pointer select-none"
               onPointerDown={e => {
                 // Select on pointer-down so the input does not blur/close the
                 // dropdown before the chosen item is committed. This also
@@ -1104,7 +1105,10 @@ function MultiPurchaseLines({ lines, setLines, masters }) {
   return <div className="space-y-3">
     <div className="flex items-center justify-between">
       <div><p className="text-sm font-semibold text-gray-800">Purchase Items</p><p className="text-xs text-gray-500">Add multiple vegetables in the same purchase.</p></div>
-      <button type="button" onClick={addLine} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium bg-green-50 text-green-700 hover:bg-green-100"><Plus size={14} /> Add Item</button>
+      <button type="button" onClick={addLine} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-[var(--theme-primary)] hover:bg-[var(--theme-primary-soft-hover)]"
+style={{
+  backgroundColor: "var(--theme-primary-soft)"
+}}><Plus size={14} /> Add Item</button>
     </div>
     {lines.map((line, index) => {
       const unit = units.find(u => String(u.symbol) === String(line.quantityUnit));
@@ -1119,7 +1123,21 @@ function MultiPurchaseLines({ lines, setLines, masters }) {
         <div className="flex items-end gap-2"><Field label="Rate (₹/Kg)"><input type="number" min="0" className={inputCls} value={line.rate} onChange={e => update(index, { rate: e.target.value })} /></Field><div className="mb-3 min-w-[110px] text-right"><p className="text-[11px] text-gray-400">Amount</p><p className="font-semibold text-gray-800">{fmt(amount)}</p></div></div>
       </div>;
     })}
-    <div className="rounded-xl border border-green-100 bg-green-50 px-4 py-3 flex items-center justify-between"><span className="text-sm font-medium text-green-800">Purchase Total</span><span className="text-lg font-bold text-green-800">{fmt(total)}</span></div>
+    <div
+      className="rounded-xl px-4 py-3 flex items-center justify-between"
+      style={{
+        backgroundColor: "var(--theme-primary-soft)",
+        border: "1px solid var(--theme-primary-border)"
+      }}
+    >
+      <span className="text-sm font-medium text-[var(--theme-primary)]">
+        Purchase Total
+      </span>
+
+      <span className="text-lg font-bold text-[var(--theme-primary)]">
+        {fmt(total)}
+      </span>
+    </div>
   </div>;
 }
 
@@ -1134,7 +1152,7 @@ function MultiSaleLines({ lines, setLines, masters }) {
     return sum + qty * Number(unit?.kgMultiplier || 1) * rate;
   }, 0);
   return <div className="space-y-3">
-    <div className="flex items-center justify-between"><div><p className="text-sm font-semibold text-gray-800">Sale Items</p><p className="text-xs text-gray-500">Add multiple vegetables to the same customer sale.</p></div><button type="button" onClick={addLine} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium bg-green-50 text-green-700 hover:bg-green-100"><Plus size={14} /> Add Item</button></div>
+    <div className="flex items-center justify-between"><div><p className="text-sm font-semibold text-gray-800">Sale Items</p><p className="text-xs text-gray-500">Add multiple vegetables to the same customer sale.</p></div><button type="button" onClick={addLine} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-[var(--theme-primary)] hover:bg-[var(--theme-primary-soft-hover)]"style={{backgroundColor: "var(--theme-primary-soft)"}}><Plus size={14} /> Add Item</button></div>
     {lines.map((line, index) => {
       const unit = units.find(u => String(u.symbol) === String(line.quantityUnit));
       const amount = Number(line.quantityValue || 0) * Number(unit?.kgMultiplier || 1) * Number(line.rate || 0);
@@ -1145,7 +1163,21 @@ function MultiSaleLines({ lines, setLines, masters }) {
         <div className="flex items-end gap-2"><Field label="Rate (₹/Kg)"><input type="number" min="0" className={inputCls} value={line.rate} onChange={e => update(index, { rate: e.target.value })} /></Field><div className="mb-3 min-w-[110px] text-right"><p className="text-[11px] text-gray-400">Amount</p><p className="font-semibold text-gray-800">{fmt(amount)}</p></div></div>
       </div>;
     })}
-    <div className="rounded-xl border border-green-100 bg-green-50 px-4 py-3 flex items-center justify-between"><span className="text-sm font-medium text-green-800">Sale Total</span><span className="text-lg font-bold text-green-800">{fmt(total)}</span></div>
+    <div
+      className="rounded-xl px-4 py-3 flex items-center justify-between"
+      style={{
+        backgroundColor: "var(--theme-primary-soft)",
+        border: "1px solid var(--theme-primary-border)"
+      }}
+    >
+      <span className="text-sm font-medium text-[var(--theme-primary)]">
+        Sale Total
+      </span>
+
+      <span className="text-lg font-bold text-[var(--theme-primary)]">
+        {fmt(total)}
+      </span>
+    </div>
   </div>;
 }
 
@@ -1307,7 +1339,7 @@ function DataTable({ columns, rows, onDelete, onEdit, rowKey = "id" }) {
                 <td className="px-3 py-3 text-right">
                   <div className="flex items-center justify-end gap-2">
                     {onEdit && (
-                      <button onClick={() => onEdit(r)} className="text-gray-300 hover:text-green-700" title="Edit">
+                      <button onClick={() => onEdit(r)} className="text-gray-300 hover:text-[var(--theme-primary)]" title="Edit">
                         <Pencil size={16} />
                       </button>
                     )}
@@ -1328,11 +1360,8 @@ function DataTable({ columns, rows, onDelete, onEdit, rowKey = "id" }) {
 }
 
 function StatCard({ icon: Icon, color, label, value, sub, trend }) {
-  const bg = {
-    green: "bg-green-100 text-green-600", blue: "bg-blue-100 text-blue-600",
-    purple: "bg-purple-100 text-purple-600", orange: "bg-orange-100 text-orange-600",
-    teal: "bg-teal-100 text-teal-600",
-  }[color];
+  const bg =
+  "bg-[var(--theme-primary-soft)] text-[var(--theme-primary)]";
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex-1 min-w-[190px]">
       <div className="flex items-center gap-3 mb-3">
@@ -1384,7 +1413,12 @@ function Sidebar({ page, setPage, business, mobileOpen, setMobileOpen, user, onL
           ><ShoppingBasket size={18} /></div>
           <div>
             <p className="font-bold leading-tight">{business.name}</p>
-            <p className="text-[11px] text-emerald-300">{business.tagline}</p>
+            <p
+              className="text-[11px]"
+              style={{ color: "var(--theme-primary)" }}
+            >
+              {business.tagline}
+            </p>
           </div>
         </div>
         <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
@@ -1422,7 +1456,12 @@ function Sidebar({ page, setPage, business, mobileOpen, setMobileOpen, user, onL
               className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white"
               style={{ backgroundColor: "var(--theme-primary)" }}
             >{String(user?.displayName || user?.username || "A").slice(0, 1).toUpperCase()}</div>
-            <div className="min-w-0 flex-1"><p className="text-sm font-semibold text-white truncate">{user?.displayName || "Administrator"}</p><p className="text-[11px] text-emerald-300 truncate">{user?.username || "admin"}</p></div>
+            <div className="min-w-0 flex-1"><p className="text-sm font-semibold text-white truncate">{user?.displayName || "Administrator"}</p><p
+              className="text-[11px] truncate"
+              style={{ color: "var(--theme-primary)" }}
+            >
+              {user?.username || "admin"}
+            </p></div>
             <button type="button" title="Sign out" onClick={onLogout} className="p-2 rounded-lg text-white/70 hover:text-white"
               style={{
                 backgroundColor: "color-mix(in srgb, var(--theme-primary) 25%, transparent)"
@@ -1513,7 +1552,10 @@ function Topbar({ page, setPage, business, notifications, setNotifications, data
           type="button"
           onClick={onMenu}
           aria-label="Open navigation"
-          className="mt-0.5 md:hidden w-10 h-10 shrink-0 rounded-xl bg-emerald-950 text-white flex items-center justify-center shadow-sm"
+          className="md:hidden w-10 h-10 shrink-0 rounded-xl text-white flex items-center justify-center shadow-sm"
+            style={{
+              backgroundColor: "color-mix(in srgb, var(--theme-primary) 55%, black)"
+            }}
         >
           <Menu size={19} />
         </button>
@@ -1525,7 +1567,12 @@ function Topbar({ page, setPage, business, notifications, setNotifications, data
       <div className="flex items-center gap-2 sm:gap-4 ml-auto">
         <LanguageSwitcher language={language} setLanguage={setLanguage} />
         <div className="relative hidden md:block">
-          <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm w-64 focus-within:ring-2 focus-within:ring-green-200 focus-within:border-green-400">
+          <div
+            className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm w-64 focus-within:ring-2 focus-within:border-[var(--theme-primary)]"
+            style={{
+              "--tw-ring-color": "var(--theme-primary-soft)"
+            }}
+          >
             <Search size={15} className="text-gray-400 shrink-0" />
             <input
               value={query}
@@ -1576,13 +1623,13 @@ function Topbar({ page, setPage, business, notifications, setNotifications, data
               <div className="absolute right-0 mt-2 w-80 bg-white border border-gray-100 rounded-xl shadow-lg z-50 overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-3 border-b border-gray-50">
                   <p className="font-medium text-gray-800 text-sm">{language === "hi" ? "सूचनाएं" : "Notifications"}</p>
-                  {unread > 0 && <button onClick={markAll} className="text-xs text-green-700 hover:underline">{language === "hi" ? "सभी को पढ़ा हुआ करें" : "Mark all as read"}</button>}
+                  {unread > 0 && <button onClick={markAll} className="text-xs text-[var(--theme-primary)] hover:underline">{language === "hi" ? "सभी को पढ़ा हुआ करें" : "Mark all as read"}</button>}
                 </div>
                 <ul className="max-h-80 overflow-y-auto divide-y divide-gray-50">
                   {notifications.length === 0 && <li className="px-4 py-6 text-center text-sm text-gray-400">{language === "hi" ? "सभी सूचनाएं देख ली गई हैं।" : "You're all caught up."}</li>}
                   {notifications.slice(0, 6).map((n) => (
-                    <li key={n.id} className={`px-4 py-3 flex items-start gap-2 ${!n.read ? "bg-green-50/40" : ""}`}>
-                      <span className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${!n.read ? "bg-green-600" : "bg-transparent"}`} />
+                    <li key={n.id} className={`px-4 py-3 flex items-start gap-2 ${!n.read ? "bg-[var(--theme-primary-soft)]" : ""}`}>
+                      <span className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${!n.read ? "bg-[var(--theme-primary)]" : "bg-transparent"}`} />
                       <button onClick={() => markRead(n.id)} className="flex-1 text-left">
                         <p className="text-sm text-gray-700 leading-snug">{translateNotification(n, language, data.masters)}</p>
                         <p className="text-xs text-gray-400 mt-0.5">{translateUiString(n.time, language)}</p>
@@ -1590,7 +1637,7 @@ function Topbar({ page, setPage, business, notifications, setNotifications, data
                     </li>
                   ))}
                 </ul>
-                <button onClick={() => goTo("notifications")} className="w-full text-center text-sm text-green-700 py-2.5 border-t border-gray-50 hover:bg-gray-50">
+                <button onClick={() => goTo("notifications")} className="w-full text-center text-sm text-[var(--theme-primary)] py-2.5 border-t border-gray-50 hover:bg-gray-50">
                   {language === "hi" ? "सभी सूचनाएं देखें" : "View all notifications"}
                 </button>
               </div>
@@ -1599,7 +1646,12 @@ function Topbar({ page, setPage, business, notifications, setNotifications, data
         </div>
 
         <div className="flex items-center gap-2">
-          <div className="profile-avatar w-9 h-9 rounded-full bg-green-700 text-white flex items-center justify-center text-sm font-semibold">
+          <div
+            className="profile-avatar w-9 h-9 rounded-full text-white flex items-center justify-center text-sm font-semibold"
+            style={{
+              backgroundColor: "var(--theme-primary)"
+            }}
+          >
             {business.owner.split(" ").map((w) => w[0]).slice(0, 2).join("")}
           </div>
           <div className="hidden sm:block">
@@ -1696,7 +1748,7 @@ function DashboardPage({ data }) {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         <Panel title="Last 7 Days">
-          <div className="h-48"><ResponsiveContainer width="100%" height="100%"><LineChart data={data.salesTrend}><CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" /><XAxis dataKey="day" tick={{ fontSize: 10 }} /><YAxis tick={{ fontSize: 10 }} width={40} /><RTooltip formatter={v => fmt(v)} /><Legend wrapperStyle={{ fontSize: 12 }} /><Line type="monotone" dataKey="sales" stroke="#16a34a" strokeWidth={2} name="Sales" /><Line type="monotone" dataKey="purchase" stroke="#2563eb" strokeWidth={2} name="Purchase" /></LineChart></ResponsiveContainer></div>
+          <div className="h-48"><ResponsiveContainer width="100%" height="100%"><LineChart data={data.salesTrend}><CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" /><XAxis dataKey="day" tick={{ fontSize: 10 }} /><YAxis tick={{ fontSize: 10 }} width={40} /><RTooltip formatter={v => fmt(v)} /><Legend wrapperStyle={{ fontSize: 12 }} /><Line type="monotone" dataKey="sales" stroke="var(--theme-primary)" strokeWidth={2} name="Sales" /><Line type="monotone" dataKey="purchase" stroke="#2563eb" strokeWidth={2} name="Purchase" /></LineChart></ResponsiveContainer></div>
         </Panel>
         <Panel title="Recent Sales">
           {recentSales.length ? <ul className="space-y-2 text-sm">{recentSales.map(s => <li key={s.id} className="flex justify-between"><span className="text-gray-500">{itemLabel(s.item, data.masters, language)} · {s.customer}</span><span className="font-medium">{fmt(s.amount)}</span></li>)}</ul> : <p className="text-sm text-gray-400 py-8 text-center">No sales yet.</p>}
@@ -1711,7 +1763,7 @@ function DashboardPage({ data }) {
           <div><p className="text-xs text-gray-400">Sales</p><p className="font-semibold">{fmt(month.sales_month)}</p></div>
           <div><p className="text-xs text-gray-400">Purchase</p><p className="font-semibold">{fmt(month.purchases_month)}</p></div>
           <div><p className="text-xs text-gray-400">COGS</p><p className="font-semibold">{fmt(month.cogs_month)}</p></div>
-          <div><p className="text-xs text-gray-400">Gross Profit</p><p className="font-semibold text-green-700">{fmt(Number(month.sales_month || 0) - Number(month.cogs_month || 0))}</p></div>
+          <div><p className="text-xs text-gray-400">Gross Profit</p><p className="font-semibold text-[var(--theme-primary)]">{fmt(Number(month.sales_month || 0) - Number(month.cogs_month || 0))}</p></div>
           <div><p className="text-xs text-gray-400">Expenses + Labour</p><p className="font-semibold">{fmt(Number(month.expenses_month || 0) + Number(month.labour_month || 0))}</p></div>
           <div><p className="text-xs text-gray-400">Stock Value</p><p className="font-semibold">{fmt(month.stock_value)}</p></div>
         </div>
@@ -1722,7 +1774,7 @@ function DashboardPage({ data }) {
           <div><p className="text-xs text-gray-400">Purchase</p><p className="font-semibold">{fmt(totalPurchase)}</p></div>
           <div><p className="text-xs text-gray-400">Expenses</p><p className="font-semibold">{fmt(totalExpenses)}</p></div>
           <div><p className="text-xs text-gray-400">Labour</p><p className="font-semibold">{fmt(totalLabour)}</p></div>
-          <div><p className="text-xs text-gray-400">Collected</p><p className="font-semibold text-green-700">{fmt(month.collected_today)}</p></div>
+          <div><p className="text-xs text-gray-400">Collected</p><p className="font-semibold text-[var(--theme-primary)]">{fmt(month.collected_today)}</p></div>
         </div>
       </Panel>
     </div>
@@ -2009,7 +2061,10 @@ function SalesPage({ sales, setSales, customers, payments = [], refresh, masters
         { key: "qty", label: "Qty", render: r => `${r.quantityValue ?? r.qty} ${r.quantityUnit || "Kg"}` },
         { key: "rate", label: "Rate/Kg", render: r => fmt(r.rate) },
         { key: "amount", label: "Amount", render: r => <span className="font-medium">{fmt(r.amount)}</span> },
-        { key: "payment_method", label: "Method", render: r => r.status === "Paid" ? <button type="button" onClick={() => setPaymentDetails(r)} className="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-medium hover:bg-blue-100">{r.payment_method || r.paymentMethod || "Cash"}</button> : <span className="text-xs text-gray-400">—</span> },
+        { key: "payment_method", label: "Method", render: r => r.status === "Paid" ? <button type="button" onClick={() => setPaymentDetails(r)} className="px-2.5 py-1 rounded-full text-[var(--theme-primary)] text-xs font-medium hover:bg-[var(--theme-primary-soft-hover)]"
+          style={{
+            backgroundColor: "var(--theme-primary-soft)"
+          }}>{r.payment_method || r.paymentMethod || "Cash"}</button> : <span className="text-xs text-gray-400">—</span> },
         { key: "status", label: "Status", render: r => <Badge status={r.status} /> }
       ]} rows={filteredSales} />
     </Panel>
@@ -2024,7 +2079,7 @@ function SalesPage({ sales, setSales, customers, payments = [], refresh, masters
       <Btn className="w-full justify-center mt-3" onClick={add}><Check size={15} /> Save Sale</Btn>
     </Modal>
 
-    <Panel title="Recent Payments"><DataTable columns={[{ key: "date", label: "Date" }, { key: "customer", label: "Customer" }, { key: "sale_item", label: "Item", render: r => <span>{r.sale_item || "Customer Payment"}{r.sale_specification && <span className="text-xs text-gray-400 block">{r.sale_specification}</span>}</span> }, { key: "amount", label: "Amount", render: r => <span className="font-medium">{fmt(r.amount)}</span> }, { key: "payment_method", label: "Method", render: r => <Badge status={r.payment_method || "Cash"} /> }, { key: "sale_id", label: "Type", render: r => <span className="text-xs text-gray-500">{r.sale_id || r.source_sale_id ? "Sale Payment" : "Customer Payment"}</span> }, { key: "payment_proof", label: "Proof", render: r => r.payment_proof ? <a href={r.payment_proof} target="_blank" rel="noopener noreferrer" className="text-xs text-green-700 hover:underline">View screenshot</a> : <span className="text-xs text-gray-400">—</span> }, { key: "transaction_id", label: "Transaction ID", render: r => r.transaction_id ? <span className="text-xs font-medium break-all">{r.transaction_id}</span> : <span className="text-xs text-gray-400">—</span> }, { key: "note", label: "Note", render: r => r.note || "—" }]} rows={payments.slice(0, 30)} /></Panel>
+    <Panel title="Recent Payments"><DataTable columns={[{ key: "date", label: "Date" }, { key: "customer", label: "Customer" }, { key: "sale_item", label: "Item", render: r => <span>{r.sale_item || "Customer Payment"}{r.sale_specification && <span className="text-xs text-gray-400 block">{r.sale_specification}</span>}</span> }, { key: "amount", label: "Amount", render: r => <span className="font-medium">{fmt(r.amount)}</span> }, { key: "payment_method", label: "Method", render: r => <Badge status={r.payment_method || "Cash"} /> }, { key: "sale_id", label: "Type", render: r => <span className="text-xs text-gray-500">{r.sale_id || r.source_sale_id ? "Sale Payment" : "Customer Payment"}</span> }, { key: "payment_proof", label: "Proof", render: r => r.payment_proof ? <a href={r.payment_proof} target="_blank" rel="noopener noreferrer" className="text-xs text-[var(--theme-primary)] hover:underline">View screenshot</a> : <span className="text-xs text-gray-400">—</span> }, { key: "transaction_id", label: "Transaction ID", render: r => r.transaction_id ? <span className="text-xs font-medium break-all">{r.transaction_id}</span> : <span className="text-xs text-gray-400">—</span> }, { key: "note", label: "Note", render: r => r.note || "—" }]} rows={payments.slice(0, 30)} /></Panel>
   </div>;
 }
 
@@ -2403,10 +2458,11 @@ function PaymentsPage({
                       paymentMethod: method
                     })
                   }
-                  className={`px-4 py-2 rounded-lg border ${form.paymentMethod === method
-                      ? "bg-black text-white"
-                      : "bg-white"
-                    }`}
+                  className={`px-4 py-2 rounded-lg border ${
+                    form.paymentMethod === method
+                      ? "bg-[var(--theme-primary)] text-white border-[var(--theme-primary)]"
+                      : "bg-white text-gray-700"
+                  }`}
                 >
                   {method}
                 </button>
@@ -2470,7 +2526,10 @@ function PaymentsPage({
           <button
             type="submit"
             disabled={saving}
-            className="px-5 py-2.5 rounded-lg bg-black text-white disabled:opacity-50"
+            className="px-5 py-2.5 rounded-lg text-white disabled:opacity-50 transition"
+            style={{
+              backgroundColor: "var(--theme-primary)"
+            }}
           >
             {saving ? "Saving..." : "Add Payment"}
           </button>
@@ -2733,7 +2792,7 @@ function ReportsPage({ data }) {
     <Panel title="Business Overview" action={<div className="flex flex-wrap gap-2"><input type="date" className={inputCls + " !w-auto"} value={from} onChange={e => setFrom(e.target.value)} /><input type="date" className={inputCls + " !w-auto"} value={to} onChange={e => setTo(e.target.value)} /><Btn onClick={() => load()}><RefreshCw size={14} /> Apply</Btn><Btn variant="outline" onClick={monthly}>This Month</Btn></div>}>
       {loading ? <p className="text-sm text-gray-400 py-8 text-center">Calculating from database…</p> : <><div className="grid grid-cols-2 md:grid-cols-5 gap-3"><StatCard icon={Truck} color="blue" label="Sales" value={fmt(totals.sales)} /><StatCard icon={ShoppingBasket} color="green" label="Purchase" value={fmt(totals.purchase)} /><StatCard icon={Boxes} color="teal" label="Sold Quantity" value={fmtKg(totals.sold_qty)} /><StatCard icon={Receipt} color="orange" label="COGS" value={fmt(totals.cogs)} /><StatCard icon={CircleDollarSign} color="purple" label="Gross Profit" value={fmt(totals.profit)} /></div></>}
     </Panel>
-    {!loading && <><Panel title={`${language === "hi" ? "दिनांकवार अवलोकन" : "Date-wise Overview"} (${from} ${language === "hi" ? "से" : "to"} ${to})`}><DataTable columns={[{ key: "date", label: language === "hi" ? "दिनांक" : "Date" }, { key: "sales", label: language === "hi" ? "बिक्री" : "Sales", render: r => fmt(r.sales) }, { key: "purchase", label: language === "hi" ? "खरीद" : "Purchase", render: r => fmt(r.purchase) }, { key: "sold_qty", label: language === "hi" ? "बिकी मात्रा" : "Sold", render: r => fmtKg(r.sold_qty) }, { key: "cogs", label: "COGS", render: r => fmt(r.cogs) }, { key: "profit", label: language === "hi" ? "सकल लाभ" : "Gross Profit", render: r => <span className="font-medium text-green-700">{fmt(r.profit)}</span> }]} rows={report.daily.map(r => ({ ...r, date: r.date?.slice(0, 10) }))} /></Panel>
+    {!loading && <><Panel title={`${language === "hi" ? "दिनांकवार अवलोकन" : "Date-wise Overview"} (${from} ${language === "hi" ? "से" : "to"} ${to})`}><DataTable columns={[{ key: "date", label: language === "hi" ? "दिनांक" : "Date" }, { key: "sales", label: language === "hi" ? "बिक्री" : "Sales", render: r => fmt(r.sales) }, { key: "purchase", label: language === "hi" ? "खरीद" : "Purchase", render: r => fmt(r.purchase) }, { key: "sold_qty", label: language === "hi" ? "बिकी मात्रा" : "Sold", render: r => fmtKg(r.sold_qty) }, { key: "cogs", label: "COGS", render: r => fmt(r.cogs) }, { key: "profit", label: language === "hi" ? "सकल लाभ" : "Gross Profit", render: r => <span className="font-medium text-[var(--theme-primary)]">{fmt(r.profit)}</span> }]} rows={report.daily.map(r => ({ ...r, date: r.date?.slice(0, 10) }))} /></Panel>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5"><Panel title="High-Demand Sabji (by quantity sold)"><DataTable columns={[{ key: "item", label: "Sabji", render: r => <span>{itemLabel(r.item, data.masters, language)}{r.specification && <span className="text-xs text-gray-400 block">{r.specification}</span>}</span> }, { key: "sold_qty", label: "Sold", render: r => fmtKg(r.sold_qty) }, { key: "avg_daily_qty", label: "Avg/Day", render: r => fmtKg(r.avg_daily_qty) }]} rows={topDemand} /></Panel><Panel title="Highest Profit Sabji"><DataTable columns={[{ key: "item", label: "Sabji", render: r => <span>{itemLabel(r.item, data.masters, language)}{r.specification && <span className="text-xs text-gray-400 block">{r.specification}</span>}</span> }, { key: "revenue", label: "Revenue", render: r => fmt(r.revenue) }, { key: "profit", label: "Profit", render: r => <span className="font-medium text-green-700">{fmt(r.profit)}</span> }, { key: "margin", label: "Margin", render: r => `${r.margin}%` }]} rows={topProfit} /></Panel></div>
       <Panel title="What Should I Purchase Next?"><p className="text-xs text-gray-500 mb-3">Recommendations use sales velocity, current stock coverage and profitability. Suggested quantity targets about 7 days of demand.</p><DataTable columns={[{ key: "item", label: "Sabji", render: r => <span>{itemLabel(r.item, data.masters, language)}{r.specification && <span className="text-xs text-gray-400 block">{r.specification}</span>}</span> }, { key: "stock_qty", label: "Current Stock", render: r => fmtKg(r.stock_qty) }, { key: "stock_days", label: "Stock Cover", render: r => r.stock_days === null ? "No recent sales" : `${r.stock_days} days` }, { key: "avg_daily_qty", label: "Demand/Day", render: r => fmtKg(r.avg_daily_qty) }, { key: "profit", label: "Profit", render: r => fmt(r.profit) }, { key: "priority", label: "Priority", render: r => <Badge status={r.priority === 'URGENT' ? 'Overdue' : r.priority === 'HIGH' ? 'Due Today' : 'Upcoming'} /> }, { key: "suggested_qty", label: "Suggested Buy", render: r => fmtKg(r.suggested_qty) }]} rows={purchase} /></Panel>
     </>}
@@ -2779,7 +2838,7 @@ function NotificationsPage({ notifications, setNotifications, data, refresh }) {
   const clear = () => { setSearch(""); setReadFilter(""); setTypeFilter(""); };
   const markRead = async id => { const previous = notifications; setNotifications(notifications.map(n => n.id === id ? { ...n, read: true } : n)); try { await api.update("notifications", id, { read: true }) } catch (err) { setNotifications(previous); appAlert(err.message) } }
   const markAll = async () => { const previous = notifications; setNotifications(notifications.map(n => ({ ...n, read: true }))); try { await api.markAllNotificationsRead() } catch (err) { setNotifications(previous); appAlert(err.message) } }
-  return <div className="space-y-5"><Panel title={language === "hi" ? "सूचनाएं" : "Notifications"} action={<Btn variant="outline" onClick={markAll}>{language === "hi" ? "सभी को पढ़ा हुआ करें" : "Mark all as read"}</Btn>}><FilterBar search={search} setSearch={setSearch} placeholder={language === "hi" ? "सूचनाएं खोजें…" : "Search notifications…"} onClear={clear}><select className={inputCls + " !w-auto bg-white"} value={readFilter} onChange={e => setReadFilter(e.target.value)}><option value="">{language === "hi" ? "सभी" : "All"}</option><option value="Unread">{language === "hi" ? "अपठित" : "Unread"}</option><option value="Read">{language === "hi" ? "पढ़ी हुई" : "Read"}</option></select>{types.length > 0 && <select className={inputCls + " !w-auto bg-white"} value={typeFilter} onChange={e => setTypeFilter(e.target.value)}><option value="">{language === "hi" ? "सभी प्रकार" : "All Types"}</option>{types.map(t => <option key={t} value={t}>{t}</option>)}</select>}</FilterBar><ul className="divide-y divide-gray-50">{filtered.map(n => <li key={n.id} className={`py-3 flex items-start gap-3 ${!n.read ? "bg-green-50/40 -mx-2 px-2 rounded-lg" : ""}`}><span className={`mt-1.5 w-2 h-2 rounded-full shrink-0 ${!n.read ? "bg-green-600" : "bg-transparent"}`} /><div className="flex-1"><p className="text-sm text-gray-700">{translateNotification(n, language, data.masters)}</p><div className="flex items-center gap-2 mt-1"><p className="text-xs text-gray-400">{translateUiString(n.time, language)}</p>{n.action_type === "whatsapp" && n.action_value && <a href={whatsappUrl(n.action_value, n.action_message || `${n.text} Please make the payment at your earliest convenience. Thank you.`)} target="_blank" rel="noopener noreferrer" onClick={() => { const message = n.action_message || `${n.text} Please make the payment at your earliest convenience. Thank you.`; const customerText = String(n.text || "").replace(/ has an overdue payment.*$/, "").replace(/ has a payment.*$/, ""); const m = String(message).match(/₹([\d,]+(?:\.\d+)?)/); void markRead(n.id); api.logWhatsAppReminder({ customer: customerText, phone: n.action_value, amount: Number((m?.[1] || "0").replace(/,/g, "")), message }).then(() => refresh()).catch(err => console.error("Failed to update WhatsApp Bills:", err)); }} className="text-xs text-green-700 font-medium hover:underline">{language === "hi" ? "व्हाट्सऐप रिमाइंडर भेजें" : "Send WhatsApp reminder"}</a>}</div></div>{!n.read && <button onClick={() => markRead(n.id)} className="text-xs text-green-700 hover:underline">{language === "hi" ? "पढ़ा हुआ करें" : "Mark read"}</button>}</li>)}{filtered.length === 0 && <li className="text-center text-gray-400 text-sm py-8">{language === "hi" ? "आपके फ़िल्टर से कोई सूचना मेल नहीं खाती।" : "No notifications match your filters."}</li>}</ul></Panel></div>;
+  return <div className="space-y-5"><Panel title={language === "hi" ? "सूचनाएं" : "Notifications"} action={<Btn variant="outline" onClick={markAll}>{language === "hi" ? "सभी को पढ़ा हुआ करें" : "Mark all as read"}</Btn>}><FilterBar search={search} setSearch={setSearch} placeholder={language === "hi" ? "सूचनाएं खोजें…" : "Search notifications…"} onClear={clear}><select className={inputCls + " !w-auto bg-white"} value={readFilter} onChange={e => setReadFilter(e.target.value)}><option value="">{language === "hi" ? "सभी" : "All"}</option><option value="Unread">{language === "hi" ? "अपठित" : "Unread"}</option><option value="Read">{language === "hi" ? "पढ़ी हुई" : "Read"}</option></select>{types.length > 0 && <select className={inputCls + " !w-auto bg-white"} value={typeFilter} onChange={e => setTypeFilter(e.target.value)}><option value="">{language === "hi" ? "सभी प्रकार" : "All Types"}</option>{types.map(t => <option key={t} value={t}>{t}</option>)}</select>}</FilterBar><ul className="divide-y divide-gray-50">{filtered.map(n => <li key={n.id} className={`py-3 flex items-start gap-3 ${!n.read ? "bg-[var(--theme-primary-soft)] -mx-2 px-2 rounded-lg" : ""}`}><span className={`mt-1.5 w-2 h-2 rounded-full shrink-0 ${!n.read ? "bg-[var(--theme-primary)]" : "bg-transparent"}`} /><div className="flex-1"><p className="text-sm text-gray-700">{translateNotification(n, language, data.masters)}</p><div className="flex items-center gap-2 mt-1"><p className="text-xs text-gray-400">{translateUiString(n.time, language)}</p>{n.action_type === "whatsapp" && n.action_value && <a href={whatsappUrl(n.action_value, n.action_message || `${n.text} Please make the payment at your earliest convenience. Thank you.`)} target="_blank" rel="noopener noreferrer" onClick={() => { const message = n.action_message || `${n.text} Please make the payment at your earliest convenience. Thank you.`; const customerText = String(n.text || "").replace(/ has an overdue payment.*$/, "").replace(/ has a payment.*$/, ""); const m = String(message).match(/₹([\d,]+(?:\.\d+)?)/); void markRead(n.id); api.logWhatsAppReminder({ customer: customerText, phone: n.action_value, amount: Number((m?.[1] || "0").replace(/,/g, "")), message }).then(() => refresh()).catch(err => console.error("Failed to update WhatsApp Bills:", err)); }} className="text-xs text-[var(--theme-primary)] font-medium hover:underline">{language === "hi" ? "व्हाट्सऐप रिमाइंडर भेजें" : "Send WhatsApp reminder"}</a>}</div></div>{!n.read && <button onClick={() => markRead(n.id)} className="text-xs text-[var(--theme-primary)] hover:underline">{language === "hi" ? "पढ़ा हुआ करें" : "Mark read"}</button>}</li>)}{filtered.length === 0 && <li className="text-center text-gray-400 text-sm py-8">{language === "hi" ? "आपके फ़िल्टर से कोई सूचना मेल नहीं खाती।" : "No notifications match your filters."}</li>}</ul></Panel></div>;
 }
 
 /* ---------------------------------------------------------------
@@ -2817,7 +2876,11 @@ function SettingsPage({ business, setBusiness, masters, refreshMasters, stock = 
         themeColor,
         whatsappSendAllEnabled: waSendAllEnabled,
         lowStockThresholdKg: Number(lowStockThreshold)
-      }); setBusiness(updated); setForm(updated); setWaSendAllEnabled(readWaSendAll(updated)); setSaved(true); setTimeout(() => setSaved(false), 2000);
+      }); setBusiness(updated);
+        localStorage.setItem(
+          "sabzisetu-theme-color",
+          updated?.themeColor || updated?.theme_color || "#047857"
+        ); setForm(updated); setWaSendAllEnabled(readWaSendAll(updated)); setSaved(true); setTimeout(() => setSaved(false), 2000);
     } catch (err) { appAlert("Couldn't save settings.\n" + err.message) }
   };
   const changeAdminPassword = async (e) => {
@@ -2900,7 +2963,9 @@ function SettingsPage({ business, setBusiness, masters, refreshMasters, stock = 
     <Panel title="Admin Controls" className="space-y-4">
       <div className="flex items-center justify-between gap-4 rounded-xl border border-gray-100 bg-gray-50 p-4">
         <div><h4 className="font-semibold text-gray-800">WhatsApp “Send to All”</h4><p className="text-xs text-gray-500 mt-1">Turn this option on or off. When off, the Send to All button is removed from Payments & Due.</p></div>
-        <button type="button" onClick={toggleWhatsAppSendAll} className={`relative inline-flex h-7 w-12 shrink-0 rounded-full transition ${waSendAllEnabled ? "bg-emerald-600" : "bg-gray-300"}`} aria-label="Toggle WhatsApp Send to All">
+        <button type="button" onClick={toggleWhatsAppSendAll} className={`relative inline-flex h-7 w-12 shrink-0 rounded-full transition ${
+            waSendAllEnabled ? "bg-[var(--theme-primary)]" : "bg-gray-300"
+          }`} aria-label="Toggle WhatsApp Send to All">
           <span className={`inline-block h-5 w-5 transform rounded-full bg-white shadow mt-1 transition ${waSendAllEnabled ? "translate-x-6" : "translate-x-1"}`} />
         </button>
       </div>
@@ -3107,6 +3172,10 @@ export default function App() {
     ])
       .then(([biz, masterData, mandi, local, stk, sls, custs, pays, exp, lab, wa, notifs, trend, sum]) => {
         setBusiness(biz);
+        localStorage.setItem(
+          "sabzisetu-theme-color",
+          biz?.themeColor || biz?.theme_color || "#047857"
+        );
         setMasters(masterData);
         setMandiPurchases(mandi);
         setLocalPurchases(local);
@@ -3179,20 +3248,51 @@ export default function App() {
   };
 
   if (authStatus === "checking") {
-    return <div className="min-h-screen bg-gray-50 flex items-center justify-center"><div className="text-center"><RefreshCw className="animate-spin mx-auto mb-3 text-green-700" size={28} /><p className="text-sm text-gray-500">Checking secure session…</p></div></div>;
-  }
+  const loadingTheme =
+    localStorage.getItem("sabzisetu-theme-color") || "#047857";
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="text-center">
+        <RefreshCw
+          className="animate-spin mx-auto mb-3"
+          size={28}
+          style={{ color: loadingTheme }}
+        />
+        <p
+          className="text-sm"
+          style={{ color: loadingTheme }}
+        >
+          Checking secure session…
+        </p>
+      </div>
+    </div>
+  );
+}
   if (authStatus === "logged_out") return <LoginPage onLogin={handleLogin} />;
 
   if (status === "loading") {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center font-sans">
-        <div className="text-center">
-          <RefreshCw className="animate-spin mx-auto mb-3 text-green-700" size={28} />
-          <p className="text-gray-500 text-sm">Loading data from the database…</p>
-        </div>
+  const loadingTheme =
+    localStorage.getItem("sabzisetu-theme-color") || "#047857";
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center font-sans">
+      <div className="text-center">
+        <RefreshCw
+          className="animate-spin mx-auto mb-3"
+          size={28}
+          style={{ color: loadingTheme }}
+        />
+        <p
+          className="text-sm"
+          style={{ color: loadingTheme }}
+        >
+          Loading data from the database…
+        </p>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   if (status === "error") {
     return (
