@@ -761,10 +761,17 @@ function Badge({ status }) {
 
 function Btn({ children, onClick, variant = "primary", className = "", type = "button", disabled = false }) {
   const styles = {
-    primary: "bg-green-700 text-white hover:bg-green-800",
-    ghost: "bg-green-50 text-green-700 hover:bg-green-100",
-    danger: "text-red-500 hover:bg-red-50",
-    outline: "border border-gray-200 text-gray-600 hover:bg-gray-50",
+    primary:
+      "bg-[var(--theme-primary)] text-white hover:bg-[var(--theme-primary-dark)]",
+
+    ghost:
+      "bg-[var(--theme-primary-soft)] text-[var(--theme-primary)] hover:bg-[var(--theme-primary-soft-hover)]",
+
+    danger:
+      "text-red-500 hover:bg-red-50",
+
+    outline:
+      "border border-gray-200 text-gray-600 hover:bg-gray-50",
   };
   return (
     <button type={type} onClick={onClick} disabled={disabled} className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-medium transition disabled:opacity-50 disabled:cursor-not-allowed ${styles[variant]} ${className}`}>
@@ -868,18 +875,18 @@ function CameraCapture({ onCapture, onClose }) {
           <h3 className="font-semibold text-gray-800">Take Payment Photo</h3>
           <p className="text-xs text-gray-500">Use the camera to capture payment proof.</p>
         </div>
-        <button type="button" onClick={onClose} className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-100" aria-label="Close camera"><X size={18}/></button>
+        <button type="button" onClick={onClose} className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-100" aria-label="Close camera"><X size={18} /></button>
       </div>
       <div className="p-4">
         <div className="relative rounded-xl overflow-hidden bg-black aspect-video flex items-center justify-center">
           <video ref={videoRef} className="w-full h-full object-cover" autoPlay playsInline muted />
           {starting && <div className="absolute inset-0 flex items-center justify-center text-white text-sm bg-black/40">Starting camera…</div>}
-          {error && <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-white text-sm bg-black/70 text-center px-6"><Camera size={28}/><span>{error}</span></div>}
+          {error && <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-white text-sm bg-black/70 text-center px-6"><Camera size={28} /><span>{error}</span></div>}
         </div>
         {error && <p className="text-xs text-red-600 mt-2">If the browser asks for camera permission, choose <b>Allow</b>.</p>}
         <div className="flex justify-end gap-2 mt-4">
           <Btn variant="outline" onClick={onClose}>Cancel</Btn>
-          <Btn onClick={takePhoto} disabled={starting || !!error}><Camera size={15}/> Capture Photo</Btn>
+          <Btn onClick={takePhoto} disabled={starting || !!error}><Camera size={15} /> Capture Photo</Btn>
         </div>
       </div>
     </div>
@@ -905,12 +912,12 @@ function PaymentProofField({ value, onChange }) {
     <div className="mb-3">
       <span className="block text-xs font-medium text-gray-500 mb-1">Payment Proof (UPI)</span>
       <div className="flex flex-wrap gap-2">
-        <Btn variant="outline" onClick={() => setCameraOpen(true)}><Camera size={14}/> Take Photo</Btn>
-        <Btn variant="outline" onClick={() => fileRef.current?.click()}><Upload size={14}/> Upload Screenshot</Btn>
-        <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleUpload}/>
-        {value && <button type="button" className="inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm text-red-600 bg-red-50" onClick={()=>onChange(null)}><XCircle size={14}/> Remove</button>}
+        <Btn variant="outline" onClick={() => setCameraOpen(true)}><Camera size={14} /> Take Photo</Btn>
+        <Btn variant="outline" onClick={() => fileRef.current?.click()}><Upload size={14} /> Upload Screenshot</Btn>
+        <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleUpload} />
+        {value && <button type="button" className="inline-flex items-center gap-1 px-3 py-2 rounded-lg text-sm text-red-600 bg-red-50" onClick={() => onChange(null)}><XCircle size={14} /> Remove</button>}
       </div>
-      {value && <div className="mt-2 border border-gray-100 rounded-xl p-2 bg-gray-50"><img src={value} alt="Payment proof" className="max-h-40 max-w-full rounded-lg object-contain"/><p className="text-[11px] text-green-600 mt-1">✓ Payment proof attached.</p></div>}
+      {value && <div className="mt-2 border border-gray-100 rounded-xl p-2 bg-gray-50"><img src={value} alt="Payment proof" className="max-h-40 max-w-full rounded-lg object-contain" /><p className="text-[11px] text-green-600 mt-1">✓ Payment proof attached.</p></div>}
     </div>
     {cameraOpen && <CameraCapture onCapture={onChange} onClose={() => setCameraOpen(false)} />}
   </>;
@@ -1070,8 +1077,8 @@ function ItemAutocomplete({ items = [], value, onChange, specification = "", onS
 
 function QuantityFields({ units = [], value, unit, onValue, onUnit }) {
   return <div className="grid grid-cols-2 gap-3">
-    <Field label="Quantity"><input type="number" min="0" step="0.001" className={inputCls} value={value} onChange={e=>onValue(e.target.value)} /></Field>
-    <Field label="Unit"><select className={inputCls} value={unit} onChange={e=>onUnit(e.target.value)}>{units.map(u=><option key={u.id} value={u.symbol}>{u.symbol}</option>)}</select></Field>
+    <Field label="Quantity"><input type="number" min="0" step="0.001" className={inputCls} value={value} onChange={e => onValue(e.target.value)} /></Field>
+    <Field label="Unit"><select className={inputCls} value={unit} onChange={e => onUnit(e.target.value)}>{units.map(u => <option key={u.id} value={u.symbol}>{u.symbol}</option>)}</select></Field>
   </div>;
 }
 
@@ -1097,19 +1104,19 @@ function MultiPurchaseLines({ lines, setLines, masters }) {
   return <div className="space-y-3">
     <div className="flex items-center justify-between">
       <div><p className="text-sm font-semibold text-gray-800">Purchase Items</p><p className="text-xs text-gray-500">Add multiple vegetables in the same purchase.</p></div>
-      <button type="button" onClick={addLine} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium bg-green-50 text-green-700 hover:bg-green-100"><Plus size={14}/> Add Item</button>
+      <button type="button" onClick={addLine} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium bg-green-50 text-green-700 hover:bg-green-100"><Plus size={14} /> Add Item</button>
     </div>
     {lines.map((line, index) => {
       const unit = units.find(u => String(u.symbol) === String(line.quantityUnit));
       const amount = Number(line.quantityValue || 0) * Number(unit?.kgMultiplier || 1) * Number(line.rate || 0);
       return <div key={index} className="rounded-xl border border-gray-200 bg-gray-50/60 p-3">
-        <div className="flex items-center justify-between mb-2"><span className="text-xs font-semibold text-gray-500">ITEM {index + 1}</span>{lines.length > 1 && <button type="button" onClick={() => removeLine(index)} className="p-1.5 rounded-lg text-red-500 hover:bg-red-50" title="Remove item"><Trash2 size={14}/></button>}</div>
-        <Field label="Item"><ItemAutocomplete items={masters?.items || []} value={line.item} onChange={v => update(index,{item:v, specification:""})} specification={line.specification} onSpecificationChange={v => update(index,{specification:v})}/></Field>
+        <div className="flex items-center justify-between mb-2"><span className="text-xs font-semibold text-gray-500">ITEM {index + 1}</span>{lines.length > 1 && <button type="button" onClick={() => removeLine(index)} className="p-1.5 rounded-lg text-red-500 hover:bg-red-50" title="Remove item"><Trash2 size={14} /></button>}</div>
+        <Field label="Item"><ItemAutocomplete items={masters?.items || []} value={line.item} onChange={v => update(index, { item: v, specification: "" })} specification={line.specification} onSpecificationChange={v => update(index, { specification: v })} /></Field>
         <div className="grid grid-cols-[1fr_110px] gap-2">
-          <Field label="Quantity"><input type="number" min="0" step="0.001" className={inputCls} value={line.quantityValue} onChange={e=>update(index,{quantityValue:e.target.value})}/></Field>
-          <Field label="Unit"><select className={inputCls} value={line.quantityUnit} onChange={e=>update(index,{quantityUnit:e.target.value})}>{units.map(u=><option key={u.id} value={u.symbol}>{u.symbol}</option>)}</select></Field>
+          <Field label="Quantity"><input type="number" min="0" step="0.001" className={inputCls} value={line.quantityValue} onChange={e => update(index, { quantityValue: e.target.value })} /></Field>
+          <Field label="Unit"><select className={inputCls} value={line.quantityUnit} onChange={e => update(index, { quantityUnit: e.target.value })}>{units.map(u => <option key={u.id} value={u.symbol}>{u.symbol}</option>)}</select></Field>
         </div>
-        <div className="flex items-end gap-2"><Field label="Rate (₹/Kg)"><input type="number" min="0" className={inputCls} value={line.rate} onChange={e=>update(index,{rate:e.target.value})}/></Field><div className="mb-3 min-w-[110px] text-right"><p className="text-[11px] text-gray-400">Amount</p><p className="font-semibold text-gray-800">{fmt(amount)}</p></div></div>
+        <div className="flex items-end gap-2"><Field label="Rate (₹/Kg)"><input type="number" min="0" className={inputCls} value={line.rate} onChange={e => update(index, { rate: e.target.value })} /></Field><div className="mb-3 min-w-[110px] text-right"><p className="text-[11px] text-gray-400">Amount</p><p className="font-semibold text-gray-800">{fmt(amount)}</p></div></div>
       </div>;
     })}
     <div className="rounded-xl border border-green-100 bg-green-50 px-4 py-3 flex items-center justify-between"><span className="text-sm font-medium text-green-800">Purchase Total</span><span className="text-lg font-bold text-green-800">{fmt(total)}</span></div>
@@ -1127,15 +1134,15 @@ function MultiSaleLines({ lines, setLines, masters }) {
     return sum + qty * Number(unit?.kgMultiplier || 1) * rate;
   }, 0);
   return <div className="space-y-3">
-    <div className="flex items-center justify-between"><div><p className="text-sm font-semibold text-gray-800">Sale Items</p><p className="text-xs text-gray-500">Add multiple vegetables to the same customer sale.</p></div><button type="button" onClick={addLine} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium bg-green-50 text-green-700 hover:bg-green-100"><Plus size={14}/> Add Item</button></div>
+    <div className="flex items-center justify-between"><div><p className="text-sm font-semibold text-gray-800">Sale Items</p><p className="text-xs text-gray-500">Add multiple vegetables to the same customer sale.</p></div><button type="button" onClick={addLine} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium bg-green-50 text-green-700 hover:bg-green-100"><Plus size={14} /> Add Item</button></div>
     {lines.map((line, index) => {
       const unit = units.find(u => String(u.symbol) === String(line.quantityUnit));
       const amount = Number(line.quantityValue || 0) * Number(unit?.kgMultiplier || 1) * Number(line.rate || 0);
       return <div key={index} className="rounded-xl border border-gray-200 bg-gray-50/60 p-3">
-        <div className="flex items-center justify-between mb-2"><span className="text-xs font-semibold text-gray-500">ITEM {index + 1}</span>{lines.length > 1 && <button type="button" onClick={() => removeLine(index)} className="p-1.5 rounded-lg text-red-500 hover:bg-red-50" title="Remove item"><Trash2 size={14}/></button>}</div>
-        <Field label="Item"><ItemAutocomplete items={masters?.items || []} value={line.item} onChange={v => update(index,{item:v, specification:""})} specification={line.specification} onSpecificationChange={v => update(index,{specification:v})}/></Field>
-        <div className="grid grid-cols-[1fr_110px] gap-2"><Field label="Quantity"><input type="number" min="0" step="0.001" className={inputCls} value={line.quantityValue} onChange={e=>update(index,{quantityValue:e.target.value})}/></Field><Field label="Unit"><select className={inputCls} value={line.quantityUnit} onChange={e=>update(index,{quantityUnit:e.target.value})}>{units.map(u=><option key={u.id} value={u.symbol}>{u.symbol}</option>)}</select></Field></div>
-        <div className="flex items-end gap-2"><Field label="Rate (₹/Kg)"><input type="number" min="0" className={inputCls} value={line.rate} onChange={e=>update(index,{rate:e.target.value})}/></Field><div className="mb-3 min-w-[110px] text-right"><p className="text-[11px] text-gray-400">Amount</p><p className="font-semibold text-gray-800">{fmt(amount)}</p></div></div>
+        <div className="flex items-center justify-between mb-2"><span className="text-xs font-semibold text-gray-500">ITEM {index + 1}</span>{lines.length > 1 && <button type="button" onClick={() => removeLine(index)} className="p-1.5 rounded-lg text-red-500 hover:bg-red-50" title="Remove item"><Trash2 size={14} /></button>}</div>
+        <Field label="Item"><ItemAutocomplete items={masters?.items || []} value={line.item} onChange={v => update(index, { item: v, specification: "" })} specification={line.specification} onSpecificationChange={v => update(index, { specification: v })} /></Field>
+        <div className="grid grid-cols-[1fr_110px] gap-2"><Field label="Quantity"><input type="number" min="0" step="0.001" className={inputCls} value={line.quantityValue} onChange={e => update(index, { quantityValue: e.target.value })} /></Field><Field label="Unit"><select className={inputCls} value={line.quantityUnit} onChange={e => update(index, { quantityUnit: e.target.value })}>{units.map(u => <option key={u.id} value={u.symbol}>{u.symbol}</option>)}</select></Field></div>
+        <div className="flex items-end gap-2"><Field label="Rate (₹/Kg)"><input type="number" min="0" className={inputCls} value={line.rate} onChange={e => update(index, { rate: e.target.value })} /></Field><div className="mb-3 min-w-[110px] text-right"><p className="text-[11px] text-gray-400">Amount</p><p className="font-semibold text-gray-800">{fmt(amount)}</p></div></div>
       </div>;
     })}
     <div className="rounded-xl border border-green-100 bg-green-50 px-4 py-3 flex items-center justify-between"><span className="text-sm font-medium text-green-800">Sale Total</span><span className="text-lg font-bold text-green-800">{fmt(total)}</span></div>
@@ -1209,14 +1216,14 @@ function AppDialogHost() {
       <div className="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-black/5">
         <div className="flex items-start gap-3 border-b border-gray-100 px-5 py-4">
           <div className={`mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${toneUi.iconBox}`}>
-            <Icon size={20}/>
+            <Icon size={20} />
           </div>
           <div className="min-w-0 flex-1">
             <h3 className="text-[15px] font-semibold text-gray-900">{active.title || toneUi.title}</h3>
             <button type="button" onClick={() => close(false)} className="absolute" style={{ visibility: "hidden" }} aria-hidden="true" tabIndex={-1}>x</button>
           </div>
           <button type="button" onClick={() => close(false)} className="rounded-lg p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600" aria-label="Close">
-            <X size={18}/>
+            <X size={18} />
           </button>
         </div>
 
@@ -1359,42 +1366,82 @@ function Sidebar({ page, setPage, business, mobileOpen, setMobileOpen, user, onL
           onClick={() => setMobileOpen(false)}
         />
       )}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-[min(82vw,18rem)] bg-emerald-950 text-emerald-50 flex flex-col h-screen transform transition-transform duration-200 md:w-64 md:translate-x-0 ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}>
-      <div className="px-5 py-5 flex items-center gap-2 border-b border-emerald-900">
-        <div className="w-9 h-9 rounded-full bg-emerald-700 flex items-center justify-center"><ShoppingBasket size={18} /></div>
-        <div>
-          <p className="font-bold leading-tight">{business.name}</p>
-          <p className="text-[11px] text-emerald-300">{business.tagline}</p>
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 w-[min(82vw,18rem)] text-white flex flex-col h-screen transform transition-transform duration-200 md:w-64 md:translate-x-0 ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}
+        style={{
+          backgroundColor: "color-mix(in srgb, var(--theme-primary) 55%, black)"
+        }}
+      >
+        <div
+          className="px-5 py-5 flex items-center gap-2"
+          style={{
+            borderBottom: "1px solid color-mix(in srgb, var(--theme-primary) 35%, black)"
+          }}
+        >
+          <div
+            className="w-9 h-9 rounded-full flex items-center justify-center"
+            style={{ backgroundColor: "var(--theme-primary)" }}
+          ><ShoppingBasket size={18} /></div>
+          <div>
+            <p className="font-bold leading-tight">{business.name}</p>
+            <p className="text-[11px] text-emerald-300">{business.tagline}</p>
+          </div>
         </div>
-      </div>
-      <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
-        {NAV.map((n) => {
-          const Icon = n.icon;
-          const active = page === n.id;
-          return (
-            <button
-              key={n.id}
-              onClick={() => { setPage(n.id); setMobileOpen(false); }}
-              className={`w-full flex items-center gap-3 px-3 py-3 md:py-2.5 rounded-lg text-sm transition ${active ? "bg-emerald-700 text-white font-medium" : "text-emerald-200 hover:bg-emerald-900"}`}
-            >
-              <Icon size={17} />
-              {n.label}
-            </button>
-          );
-        })}
-      </nav>
-      <div className="m-3 rounded-xl bg-emerald-900 p-4">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-full bg-emerald-700 flex items-center justify-center text-xs font-bold text-white">{String(user?.displayName || user?.username || "A").slice(0,1).toUpperCase()}</div>
-          <div className="min-w-0 flex-1"><p className="text-sm font-semibold text-white truncate">{user?.displayName || "Administrator"}</p><p className="text-[11px] text-emerald-300 truncate">{user?.username || "admin"}</p></div>
-          <button type="button" title="Sign out" onClick={onLogout} className="p-2 rounded-lg text-emerald-300 hover:text-white hover:bg-emerald-800"><LogOut size={15}/></button>
+        <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
+          {NAV.map((n) => {
+            const Icon = n.icon;
+            const active = page === n.id;
+            return (
+              <button
+                key={n.id}
+                onClick={() => { setPage(n.id); setMobileOpen(false); }}
+                className={`w-full flex items-center gap-3 px-3 py-3 md:py-2.5 rounded-lg text-sm transition ${active
+                    ? "text-white font-medium"
+                    : "text-white/75 hover:text-white"
+                  }`}
+                style={
+                  active
+                    ? { backgroundColor: "var(--theme-primary)" }
+                    : undefined
+                }
+              >
+                <Icon size={17} />
+                {n.label}
+              </button>
+            );
+          })}
+        </nav>
+        <div
+          className="m-3 rounded-xl p-4"
+          style={{
+            backgroundColor: "color-mix(in srgb, var(--theme-primary) 35%, black)"
+          }}
+        >
+          <div className="flex items-center gap-2.5">
+            <div
+              className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white"
+              style={{ backgroundColor: "var(--theme-primary)" }}
+            >{String(user?.displayName || user?.username || "A").slice(0, 1).toUpperCase()}</div>
+            <div className="min-w-0 flex-1"><p className="text-sm font-semibold text-white truncate">{user?.displayName || "Administrator"}</p><p className="text-[11px] text-emerald-300 truncate">{user?.username || "admin"}</p></div>
+            <button type="button" title="Sign out" onClick={onLogout} className="p-2 rounded-lg text-white/70 hover:text-white"
+              style={{
+                backgroundColor: "color-mix(in srgb, var(--theme-primary) 25%, transparent)"
+              }}><LogOut size={15} /></button>
+          </div>
         </div>
-      </div>
-      <div className="px-4 py-3 text-[11px] text-emerald-400 border-t border-emerald-900 flex items-center justify-between">
-        <span>Version 1.0.0</span>
-        <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-green-400" /> Connected</span>
-      </div>
-    </aside>
+        <div
+  className="px-4 py-3 text-[11px] text-white/60 border-t flex items-center justify-between"
+    style={{
+      borderColor: "color-mix(in srgb, var(--theme-primary) 35%, black)"
+    }}
+  >
+          <span>Version 1.0.0</span>
+          <span className="flex items-center gap-1"><span
+            className="w-1.5 h-1.5 rounded-full"
+            style={{ backgroundColor: "var(--theme-primary)" }}
+          /> Connected</span>
+        </div>
+      </aside>
     </>
   );
 }
@@ -1471,8 +1518,8 @@ function Topbar({ page, setPage, business, notifications, setNotifications, data
           <Menu size={19} />
         </button>
         <div className="min-w-0">
-        <h1 className="text-xl sm:text-2xl font-bold text-gray-800 truncate">{title}</h1>
-        <p className="text-xs sm:text-sm text-gray-400 line-clamp-2">{subtitle === "Welcome back" ? `Welcome back, ${business.owner}!` : subtitle}</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-800 truncate">{title}</h1>
+          <p className="text-xs sm:text-sm text-gray-400 line-clamp-2">{subtitle === "Welcome back" ? `Welcome back, ${business.owner}!` : subtitle}</p>
         </div>
       </div>
       <div className="flex items-center gap-2 sm:gap-4 ml-auto">
@@ -1604,58 +1651,58 @@ function DashboardPage({ data }) {
   ];
   const month = data.summary || {};
   const recentSales = data.sales.slice(0, 5);
-  const recentPurchases = [...data.mandiPurchases, ...data.localPurchases].sort((a,b)=>String(b.date).localeCompare(String(a.date))).slice(0,5);
-  const stockAlerts = data.stock.filter(s => Number(s.qty) <= 0 || /low|urgent|out/i.test(String(s.status || ""))).slice(0,5);
+  const recentPurchases = [...data.mandiPurchases, ...data.localPurchases].sort((a, b) => String(b.date).localeCompare(String(a.date))).slice(0, 5);
+  const stockAlerts = data.stock.filter(s => Number(s.qty) <= 0 || /low|urgent|out/i.test(String(s.status || ""))).slice(0, 5);
 
   return (
     <div className="space-y-5">
       <div className="flex flex-wrap gap-4">
-        <StatCard icon={ShoppingBasket} color="green" label="Today's Purchase" value={fmt(totalPurchase)} sub={`Qty: ${fmtKg(todayMandi.reduce((s,p)=>s+p.qty,0)+todayLocal.reduce((s,p)=>s+p.qty,0))}`} />
-        <StatCard icon={Truck} color="blue" label="Today's Sales" value={fmt(totalSales)} sub={`Qty: ${fmtKg(todaySales.reduce((s,p)=>s+p.qty,0))}`} />
-        <StatCard icon={CircleDollarSign} color="purple" label="Today's Gross Profit" value={fmt(grossProfit)} sub={`Margin: ${totalSales ? ((grossProfit/totalSales)*100).toFixed(1) : 0}%`} />
-        <StatCard icon={Wallet} color="orange" label="Outstanding Due" value={fmt(totalDue)} sub={`Customers: ${data.customers.filter(c=>c.due>0).length}`} trend="down" />
+        <StatCard icon={ShoppingBasket} color="green" label="Today's Purchase" value={fmt(totalPurchase)} sub={`Qty: ${fmtKg(todayMandi.reduce((s, p) => s + p.qty, 0) + todayLocal.reduce((s, p) => s + p.qty, 0))}`} />
+        <StatCard icon={Truck} color="blue" label="Today's Sales" value={fmt(totalSales)} sub={`Qty: ${fmtKg(todaySales.reduce((s, p) => s + p.qty, 0))}`} />
+        <StatCard icon={CircleDollarSign} color="purple" label="Today's Gross Profit" value={fmt(grossProfit)} sub={`Margin: ${totalSales ? ((grossProfit / totalSales) * 100).toFixed(1) : 0}%`} />
+        <StatCard icon={Wallet} color="orange" label="Outstanding Due" value={fmt(totalDue)} sub={`Customers: ${data.customers.filter(c => c.due > 0).length}`} trend="down" />
         <StatCard icon={BarChart3} color="teal" label="Today's Net Profit" value={fmt(netProfit)} sub="After expenses & labour" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-5">
         <Panel title="Purchase Summary (Today)">
           <ul className="space-y-2 text-sm">
-            <li className="flex justify-between text-gray-500">Mandi Purchase <span className="text-gray-800">{fmt(todayMandi.reduce((s,p)=>s+p.amount,0))}</span></li>
-            <li className="flex justify-between text-gray-500">Local Purchase <span className="text-gray-800">{fmt(todayLocal.reduce((s,p)=>s+p.amount,0))}</span></li>
+            <li className="flex justify-between text-gray-500">Mandi Purchase <span className="text-gray-800">{fmt(todayMandi.reduce((s, p) => s + p.amount, 0))}</span></li>
+            <li className="flex justify-between text-gray-500">Local Purchase <span className="text-gray-800">{fmt(todayLocal.reduce((s, p) => s + p.amount, 0))}</span></li>
           </ul>
           <div className="border-t border-gray-100 mt-3 pt-3 flex justify-between text-sm"><span className="font-medium text-gray-700">Total Purchase</span><span className="font-semibold text-green-700">{fmt(totalPurchase)}</span></div>
         </Panel>
         <Panel title="Due Summary">
-          <div className="h-32"><ResponsiveContainer width="100%" height="100%"><PieChart><Pie data={dueBreak} dataKey="value" innerRadius={35} outerRadius={55} paddingAngle={2}>{dueBreak.map((d,i)=><Cell key={i} fill={d.color}/>)}</Pie><RTooltip formatter={(v)=>fmt(v)}/></PieChart></ResponsiveContainer></div>
-          <ul className="text-xs space-y-1 mt-2">{dueBreak.map(d=><li key={d.name} className="flex items-center justify-between text-gray-500"><span>{d.name}</span><span className="text-gray-700">{fmt(d.value)}</span></li>)}</ul>
+          <div className="h-32"><ResponsiveContainer width="100%" height="100%"><PieChart><Pie data={dueBreak} dataKey="value" innerRadius={35} outerRadius={55} paddingAngle={2}>{dueBreak.map((d, i) => <Cell key={i} fill={d.color} />)}</Pie><RTooltip formatter={(v) => fmt(v)} /></PieChart></ResponsiveContainer></div>
+          <ul className="text-xs space-y-1 mt-2">{dueBreak.map(d => <li key={d.name} className="flex items-center justify-between text-gray-500"><span>{d.name}</span><span className="text-gray-700">{fmt(d.value)}</span></li>)}</ul>
         </Panel>
         <Panel title="Top Selling Sabji (Today)">
-          {topSelling.length ? <ul className="space-y-2 text-sm">{topSelling.map(([key,qty])=>{const [item,specification]=key.split("|||"); return <li key={key} className="flex justify-between text-gray-500"><span>{itemLabel(item, data.masters, language)}{specification&&<span className="text-xs text-gray-400 block">{specification}</span>}</span><span className="text-gray-800">{fmtKg(qty)}</span></li>})}</ul> : <p className="text-sm text-gray-400 py-8 text-center">No sales recorded today.</p>}
+          {topSelling.length ? <ul className="space-y-2 text-sm">{topSelling.map(([key, qty]) => { const [item, specification] = key.split("|||"); return <li key={key} className="flex justify-between text-gray-500"><span>{itemLabel(item, data.masters, language)}{specification && <span className="text-xs text-gray-400 block">{specification}</span>}</span><span className="text-gray-800">{fmtKg(qty)}</span></li> })}</ul> : <p className="text-sm text-gray-400 py-8 text-center">No sales recorded today.</p>}
         </Panel>
         <Panel title="Payment Overview">
-          <div className="h-32"><ResponsiveContainer width="100%" height="100%"><PieChart><Pie data={paymentOverview} dataKey="value" innerRadius={35} outerRadius={55} paddingAngle={2}>{paymentOverview.map((d,i)=><Cell key={i} fill={d.color}/>)}</Pie><RTooltip formatter={(v)=>fmt(v)}/></PieChart></ResponsiveContainer></div>
-          <ul className="text-xs space-y-1 mt-2">{paymentOverview.map(d=><li key={d.name} className="flex items-center justify-between text-gray-500"><span>{d.name}</span><span className="text-gray-700">{fmt(d.value)}</span></li>)}</ul>
+          <div className="h-32"><ResponsiveContainer width="100%" height="100%"><PieChart><Pie data={paymentOverview} dataKey="value" innerRadius={35} outerRadius={55} paddingAngle={2}>{paymentOverview.map((d, i) => <Cell key={i} fill={d.color} />)}</Pie><RTooltip formatter={(v) => fmt(v)} /></PieChart></ResponsiveContainer></div>
+          <ul className="text-xs space-y-1 mt-2">{paymentOverview.map(d => <li key={d.name} className="flex items-center justify-between text-gray-500"><span>{d.name}</span><span className="text-gray-700">{fmt(d.value)}</span></li>)}</ul>
         </Panel>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         <Panel title="Current Stock Snapshot" className="lg:col-span-2">
-          <DataTable columns={[{key:"item",label:"Item",render:r=><span>{itemLabel(r.item, data.masters, language)}{r.specification&&<span className="text-xs text-gray-400 block">{r.specification}</span>}</span>},{key:"qty",label:"Qty",render:r=>fmtKg(r.qty)},{key:"avgCost",label:"Avg. Cost",render:r=>fmt(r.avgCost)},{key:"sellingPrice",label:"Selling Price",render:r=>fmt(r.sellingPrice)},{key:"status",label:"Status",render:r=><Badge status={r.status||"Available"}/>}]} rows={data.stock.slice(0,8)} />
+          <DataTable columns={[{ key: "item", label: "Item", render: r => <span>{itemLabel(r.item, data.masters, language)}{r.specification && <span className="text-xs text-gray-400 block">{r.specification}</span>}</span> }, { key: "qty", label: "Qty", render: r => fmtKg(r.qty) }, { key: "avgCost", label: "Avg. Cost", render: r => fmt(r.avgCost) }, { key: "sellingPrice", label: "Selling Price", render: r => fmt(r.sellingPrice) }, { key: "status", label: "Status", render: r => <Badge status={r.status || "Available"} /> }]} rows={data.stock.slice(0, 8)} />
         </Panel>
         <Panel title="Recent Due List">
-          {data.customers.filter(c=>c.due>0).slice(0,5).length ? <ul className="divide-y divide-gray-50 text-sm">{data.customers.filter(c=>c.due>0).slice(0,5).map(c=><li key={c.id} className="py-2.5 flex items-center justify-between"><div><p className="text-gray-800">{c.name}</p><p className="text-xs text-gray-400">{c.phone||"No mobile"}</p></div><div className="text-right"><p className="font-medium text-gray-800">{fmt(c.due)}</p><Badge status={c.status}/></div></li>)}</ul> : <p className="text-sm text-gray-400 py-8 text-center">No outstanding dues.</p>}
+          {data.customers.filter(c => c.due > 0).slice(0, 5).length ? <ul className="divide-y divide-gray-50 text-sm">{data.customers.filter(c => c.due > 0).slice(0, 5).map(c => <li key={c.id} className="py-2.5 flex items-center justify-between"><div><p className="text-gray-800">{c.name}</p><p className="text-xs text-gray-400">{c.phone || "No mobile"}</p></div><div className="text-right"><p className="font-medium text-gray-800">{fmt(c.due)}</p><Badge status={c.status} /></div></li>)}</ul> : <p className="text-sm text-gray-400 py-8 text-center">No outstanding dues.</p>}
         </Panel>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         <Panel title="Last 7 Days">
-          <div className="h-48"><ResponsiveContainer width="100%" height="100%"><LineChart data={data.salesTrend}><CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9"/><XAxis dataKey="day" tick={{fontSize:10}}/><YAxis tick={{fontSize:10}} width={40}/><RTooltip formatter={v=>fmt(v)}/><Legend wrapperStyle={{fontSize:12}}/><Line type="monotone" dataKey="sales" stroke="#16a34a" strokeWidth={2} name="Sales"/><Line type="monotone" dataKey="purchase" stroke="#2563eb" strokeWidth={2} name="Purchase"/></LineChart></ResponsiveContainer></div>
+          <div className="h-48"><ResponsiveContainer width="100%" height="100%"><LineChart data={data.salesTrend}><CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" /><XAxis dataKey="day" tick={{ fontSize: 10 }} /><YAxis tick={{ fontSize: 10 }} width={40} /><RTooltip formatter={v => fmt(v)} /><Legend wrapperStyle={{ fontSize: 12 }} /><Line type="monotone" dataKey="sales" stroke="#16a34a" strokeWidth={2} name="Sales" /><Line type="monotone" dataKey="purchase" stroke="#2563eb" strokeWidth={2} name="Purchase" /></LineChart></ResponsiveContainer></div>
         </Panel>
         <Panel title="Recent Sales">
-          {recentSales.length ? <ul className="space-y-2 text-sm">{recentSales.map(s=><li key={s.id} className="flex justify-between"><span className="text-gray-500">{itemLabel(s.item, data.masters, language)} · {s.customer}</span><span className="font-medium">{fmt(s.amount)}</span></li>)}</ul> : <p className="text-sm text-gray-400 py-8 text-center">No sales yet.</p>}
+          {recentSales.length ? <ul className="space-y-2 text-sm">{recentSales.map(s => <li key={s.id} className="flex justify-between"><span className="text-gray-500">{itemLabel(s.item, data.masters, language)} · {s.customer}</span><span className="font-medium">{fmt(s.amount)}</span></li>)}</ul> : <p className="text-sm text-gray-400 py-8 text-center">No sales yet.</p>}
         </Panel>
         <Panel title="Stock Alerts">
-          {stockAlerts.length ? <ul className="space-y-2 text-sm">{stockAlerts.map(s=><li key={s.id} className="flex justify-between"><span>{itemLabel(s.item, data.masters, language)}</span><span className="text-red-600">{fmtKg(s.qty)}</span></li>)}</ul> : <p className="text-sm text-gray-400 py-8 text-center">No stock alerts.</p>}
+          {stockAlerts.length ? <ul className="space-y-2 text-sm">{stockAlerts.map(s => <li key={s.id} className="flex justify-between"><span>{itemLabel(s.item, data.masters, language)}</span><span className="text-red-600">{fmtKg(s.qty)}</span></li>)}</ul> : <p className="text-sm text-gray-400 py-8 text-center">No stock alerts.</p>}
         </Panel>
       </div>
 
@@ -1793,25 +1840,25 @@ function PurchasePage({ title, resource, rows, setRows, vendorLabel, refresh, ma
         <DateFilters from={from} setFrom={setFrom} to={to} setTo={setTo} />
       </FilterBar>
       <DataTable onEdit={r => setEdit({ ...r })} onDelete={del} columns={[
-        { key: "date", label: "Date" }, { key: "vendor", label: vendorLabel }, { key: "item", label: "Item", render:r=><span>{itemLabel(r.item, masters, language)}{r.specification&&<span className="text-xs text-gray-400 block">{r.specification}</span>}</span> },
+        { key: "date", label: "Date" }, { key: "vendor", label: vendorLabel }, { key: "item", label: "Item", render: r => <span>{itemLabel(r.item, masters, language)}{r.specification && <span className="text-xs text-gray-400 block">{r.specification}</span>}</span> },
         { key: "qty", label: "Qty", render: r => `${r.quantityValue ?? r.qty} ${r.quantityUnit || "Kg"}` }, { key: "rate", label: "Rate/Kg", render: r => fmt(r.rate) },
         { key: "amount", label: "Amount", render: r => <span className="font-medium text-gray-800">{fmt(r.amount)}</span> },
       ]} rows={filteredRows} />
     </Panel>
     <Modal open={!!edit} onClose={() => setEdit(null)} title={`Edit ${title}`}>
       {edit && <>
-        <Field label="Date"><input type="date" className={inputCls} value={edit.date?.slice(0,10) || ""} onChange={e => setEdit({ ...edit, date: e.target.value })} /></Field>
+        <Field label="Date"><input type="date" className={inputCls} value={edit.date?.slice(0, 10) || ""} onChange={e => setEdit({ ...edit, date: e.target.value })} /></Field>
         <Field label={vendorLabel}><input className={inputCls} value={edit.vendor || ""} onChange={e => setEdit({ ...edit, vendor: e.target.value })} /></Field>
-        <Field label="Item"><ItemAutocomplete items={masters?.items || []} value={edit.item || ""} onChange={v => setEdit(f => ({ ...f, item: v, specification: "" }))} specification={edit.specification || ""} onSpecificationChange={v => setEdit(f => ({ ...f, specification: v }))}/></Field>
-        <QuantityFields units={masters?.units || []} value={edit.quantityValue ?? edit.qty ?? ""} unit={edit.quantityUnit || "Kg"} onValue={v => setEdit({ ...edit, quantityValue: v })} onUnit={v => setEdit({ ...edit, quantityUnit: v })}/>
+        <Field label="Item"><ItemAutocomplete items={masters?.items || []} value={edit.item || ""} onChange={v => setEdit(f => ({ ...f, item: v, specification: "" }))} specification={edit.specification || ""} onSpecificationChange={v => setEdit(f => ({ ...f, specification: v }))} /></Field>
+        <QuantityFields units={masters?.units || []} value={edit.quantityValue ?? edit.qty ?? ""} unit={edit.quantityUnit || "Kg"} onValue={v => setEdit({ ...edit, quantityValue: v })} onUnit={v => setEdit({ ...edit, quantityUnit: v })} />
         <Field label="Rate (₹/Kg)"><input type="number" min="0" className={inputCls} value={edit.rate ?? ""} onChange={e => setEdit({ ...edit, rate: e.target.value })} /></Field>
-        <Btn className="w-full justify-center mt-2" onClick={saveEdit}>{saving ? "Saving…" : <><Check size={15}/> Save Changes</>}</Btn>
+        <Btn className="w-full justify-center mt-2" onClick={saveEdit}>{saving ? "Saving…" : <><Check size={15} /> Save Changes</>}</Btn>
       </>}
     </Modal>
     <Modal open={open} onClose={() => setOpen(false)} title={`Add ${title}`}>
       <Field label="Date"><input type="date" className={inputCls} value={form.date} onChange={e => setForm({ ...form, date: e.target.value })} /></Field>
-      <Field label={vendorLabel}><input className={inputCls} list={`vendors-${resource}`} placeholder="e.g. Azadpur Mandi" value={form.vendor} onChange={e => setForm({ ...form, vendor: e.target.value })} /><datalist id={`vendors-${resource}`}>{(masters?.vendors||[]).filter(v=>v.type===vendorLabel||v.type==="Both"||vendorLabel==="Vendor/Farmer").map(v=><option key={v.id} value={v.name}/>)}</datalist></Field>
-      <MultiPurchaseLines lines={lines} setLines={setLines} masters={masters}/>
+      <Field label={vendorLabel}><input className={inputCls} list={`vendors-${resource}`} placeholder="e.g. Azadpur Mandi" value={form.vendor} onChange={e => setForm({ ...form, vendor: e.target.value })} /><datalist id={`vendors-${resource}`}>{(masters?.vendors || []).filter(v => v.type === vendorLabel || v.type === "Both" || vendorLabel === "Vendor/Farmer").map(v => <option key={v.id} value={v.name} />)}</datalist></Field>
+      <MultiPurchaseLines lines={lines} setLines={setLines} masters={masters} />
       <Btn className="w-full justify-center mt-3" onClick={add}>{saving ? "Saving…" : <><Check size={15} /> Save Purchase</>}</Btn>
     </Modal>
     <Modal open={!!deleteCheck} onClose={() => !deleteLoading && setDeleteCheck(null)} title={deleteCheck?.impact?.canDelete ? "Confirm Purchase Deletion" : "Purchase Cannot Be Deleted Safely"}>
@@ -1821,7 +1868,7 @@ function PurchasePage({ title, resource, rows, setRows, vendorLabel, refresh, ma
         return <div className="space-y-4">
           <div className={`rounded-xl border p-4 ${safe ? "border-amber-200 bg-amber-50" : "border-red-200 bg-red-50"}`}>
             <div className="flex items-start gap-3">
-              <div className={`mt-0.5 w-9 h-9 rounded-full flex items-center justify-center ${safe ? "bg-amber-100 text-amber-700" : "bg-red-100 text-red-600"}`}><XCircle size={19}/></div>
+              <div className={`mt-0.5 w-9 h-9 rounded-full flex items-center justify-center ${safe ? "bg-amber-100 text-amber-700" : "bg-red-100 text-red-600"}`}><XCircle size={19} /></div>
               <div><p className={`font-semibold ${safe ? "text-amber-900" : "text-red-900"}`}>{safe ? "Stock can be safely reversed" : "This purchase is already supporting later stock movements"}</p><p className="text-sm text-gray-600 mt-1">{safe ? "Deleting this record will also reverse its inventory receipt." : (impact?.reason || "Deleting it would make the inventory history invalid.")}</p></div>
             </div>
           </div>
@@ -1832,7 +1879,7 @@ function PurchasePage({ title, resource, rows, setRows, vendorLabel, refresh, ma
             <div className="rounded-xl border border-gray-100 bg-gray-50 p-3"><p className="text-[11px] text-gray-400 uppercase">After Delete</p><p className={`font-semibold mt-1 ${safe ? "text-green-700" : "text-red-600"}`}>{impact?.remainingAfterDelete == null ? "—" : `${Number(impact.remainingAfterDelete).toFixed(3)} Kg`}</p></div>
           </div>
           {!safe && <div className="rounded-xl bg-blue-50 border border-blue-100 p-3 text-sm text-blue-900"><strong>Recommended:</strong> keep this purchase. If it was entered incorrectly, correct/reverse the dependent sales or stock movement first. This is the same principle used by inventory/ERP systems that preserve the stock ledger instead of forcing negative inventory.</div>}
-          <div className="flex justify-end gap-2 pt-1"><button type="button" className="px-4 py-2 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50" disabled={deleteLoading} onClick={() => setDeleteCheck(null)}>Keep Purchase</button>{safe ? <button type="button" className="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 disabled:opacity-50" disabled={deleteLoading} onClick={confirmDelete}>{deleteLoading ? "Deleting…" : "Delete Purchase"}</button> : <button type="button" className="px-4 py-2 rounded-lg bg-emerald-700 text-white hover:bg-emerald-800" onClick={() => {setDeleteCheck(null);setEdit({...row});}}>Edit Purchase</button>}</div>
+          <div className="flex justify-end gap-2 pt-1"><button type="button" className="px-4 py-2 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50" disabled={deleteLoading} onClick={() => setDeleteCheck(null)}>Keep Purchase</button>{safe ? <button type="button" className="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 disabled:opacity-50" disabled={deleteLoading} onClick={confirmDelete}>{deleteLoading ? "Deleting…" : "Delete Purchase"}</button> : <button type="button" className="px-4 py-2 rounded-lg bg-emerald-700 text-white hover:bg-emerald-800" onClick={() => { setDeleteCheck(null); setEdit({ ...row }); }}>Edit Purchase</button>}</div>
         </div>;
       })()}
     </Modal>
@@ -1847,7 +1894,7 @@ function StockPage({ stock, setStock, refresh, masters }) {
   const language = useLanguage();
   const [open, setOpen] = useState(false), [edit, setEdit] = useState(null), [search, setSearch] = useState(""), [statusFilter, setStatusFilter] = useState("");
   const [deleteCheck, setDeleteCheck] = useState(null), [deleteLoading, setDeleteLoading] = useState(false);
-  const [form, setForm] = useState({ item: "", specification:"", quantityValue: "", quantityUnit: "Kg", avgCost: "", sellingPrice: "", status: "Available" });
+  const [form, setForm] = useState({ item: "", specification: "", quantityValue: "", quantityUnit: "Kg", avgCost: "", sellingPrice: "", status: "Available" });
   const statuses = [...new Set(stock.map(r => r.status || "Available"))].sort();
   const filteredStock = useMemo(() => stock.filter(r => textMatch(r, ["item", "specification", "status"], search) && (!statusFilter || (r.status || "Available") === statusFilter)), [stock, search, statusFilter]);
   const totalValue = filteredStock.reduce((s, r) => s + Number(r.qty || 0) * Number(r.avgCost || 0), 0);
@@ -1855,10 +1902,10 @@ function StockPage({ stock, setStock, refresh, masters }) {
   const add = async () => {
     if (!form.item || !form.quantityValue) return;
     try {
-      const created = await api.create("stock", { item: form.item, specification:form.specification, quantityValue: Number(form.quantityValue), quantityUnit:form.quantityUnit, avgCost: Number(form.avgCost || 0), sellingPrice: Number(form.sellingPrice || 0), status: form.status });
+      const created = await api.create("stock", { item: form.item, specification: form.specification, quantityValue: Number(form.quantityValue), quantityUnit: form.quantityUnit, avgCost: Number(form.avgCost || 0), sellingPrice: Number(form.sellingPrice || 0), status: form.status });
       setStock([created, ...stock]);
       await refresh();
-      setForm({ item: "", specification:"", quantityValue: "", quantityUnit: masters?.units?.[0]?.symbol || "Kg", avgCost: "", sellingPrice: "", status: "Available" });
+      setForm({ item: "", specification: "", quantityValue: "", quantityUnit: masters?.units?.[0]?.symbol || "Kg", avgCost: "", sellingPrice: "", status: "Available" });
       setOpen(false);
     }
     catch (err) { appAlert("Couldn't save this item.\n" + err.message); }
@@ -1885,20 +1932,20 @@ function StockPage({ stock, setStock, refresh, masters }) {
     } finally { setDeleteLoading(false); }
   };
   return <div className="space-y-5">
-    <div className="flex flex-wrap gap-4"><StatCard icon={Boxes} color="green" label="Total Stock Value" value={fmt(totalValue)} /><StatCard icon={Boxes} color="blue" label="Total Quantity" value={fmtKg(filteredStock.reduce((s,r)=>s+Number(r.qty||0),0))} /><StatCard icon={Boxes} color="orange" label="Categories" value={filteredStock.length} /></div>
+    <div className="flex flex-wrap gap-4"><StatCard icon={Boxes} color="green" label="Total Stock Value" value={fmt(totalValue)} /><StatCard icon={Boxes} color="blue" label="Total Quantity" value={fmtKg(filteredStock.reduce((s, r) => s + Number(r.qty || 0), 0))} /><StatCard icon={Boxes} color="orange" label="Categories" value={filteredStock.length} /></div>
     <Panel title="Inventory" action={<Btn onClick={() => setOpen(true)}><Plus size={15} /> Add Item</Btn>}>
       <FilterBar search={search} setSearch={setSearch} placeholder="Search item or stock status…" onClear={clearFilters}>
         <select className={inputCls + " !w-auto bg-white"} value={statusFilter} onChange={e => setStatusFilter(e.target.value)}><option value="">All Statuses</option>{statuses.map(st => <option key={st} value={st}>{st}</option>)}</select>
       </FilterBar>
-      <DataTable onEdit={r => setEdit({ ...r })} onDelete={del} columns={[{key:"item",label:"Item",render:r=><span>{itemLabel(r.item, masters, language)}{r.specification&&<span className="text-xs text-gray-400 block">{r.specification}</span>}</span>},{key:"qty",label:"Qty in Stock",render:r=>fmtKg(r.qty)},{key:"avgCost",label:"Avg. Cost/Kg",render:r=>fmt(r.avgCost)},{key:"sellingPrice",label:"Selling Price/Kg",render:r=>fmt(r.sellingPrice)},{key:"value",label:"Stock Value",render:r=><span className="font-medium text-gray-800">{fmt(Number(r.qty||0)*Number(r.avgCost||0))}</span>},{key:"status",label:"Status",render:r=><Badge status={r.status||"Available"}/>}]} rows={filteredStock}/>
+      <DataTable onEdit={r => setEdit({ ...r })} onDelete={del} columns={[{ key: "item", label: "Item", render: r => <span>{itemLabel(r.item, masters, language)}{r.specification && <span className="text-xs text-gray-400 block">{r.specification}</span>}</span> }, { key: "qty", label: "Qty in Stock", render: r => fmtKg(r.qty) }, { key: "avgCost", label: "Avg. Cost/Kg", render: r => fmt(r.avgCost) }, { key: "sellingPrice", label: "Selling Price/Kg", render: r => fmt(r.sellingPrice) }, { key: "value", label: "Stock Value", render: r => <span className="font-medium text-gray-800">{fmt(Number(r.qty || 0) * Number(r.avgCost || 0))}</span> }, { key: "status", label: "Status", render: r => <Badge status={r.status || "Available"} /> }]} rows={filteredStock} />
     </Panel>
-    <Modal open={open} onClose={() => setOpen(false)} title="Add Stock Item"><Field label="Item"><ItemAutocomplete items={masters?.items || []} value={form.item} onChange={v=>setForm(f=>({...f,item:v,specification:""}))} specification={form.specification} onSpecificationChange={v=>setForm(f=>({...f,specification:v}))}/></Field><QuantityFields units={masters?.units || []} value={form.quantityValue} unit={form.quantityUnit} onValue={v=>setForm({...form,quantityValue:v})} onUnit={v=>setForm({...form,quantityUnit:v})}/><Field label="Avg. Cost/Kg"><input type="number" min="0" className={inputCls} value={form.avgCost} onChange={e=>setForm({...form,avgCost:e.target.value})}/></Field><Field label="Selling Price/Kg"><input type="number" className={inputCls} value={form.sellingPrice} onChange={e=>setForm({...form,sellingPrice:e.target.value})}/></Field><Field label="Stock Status"><input className={inputCls} placeholder="e.g. Available, Low Stock, Reserved" value={form.status} onChange={e=>setForm({...form,status:e.target.value})}/></Field><Btn className="w-full justify-center mt-2" onClick={add}><Check size={15}/> Save Item</Btn></Modal>
-    <Modal open={!!edit} onClose={()=>setEdit(null)} title="Edit Stock Item">{edit&&<><p className="text-sm text-gray-600 mb-4">{itemLabel(edit.item, masters, language)} · {fmtKg(edit.qty)} in stock</p><Field label="Selling Price/Kg"><input type="number" className={inputCls} value={edit.sellingPrice??""} onChange={e=>setEdit({...edit,sellingPrice:e.target.value})}/></Field><Field label="Stock Status"><input className={inputCls} placeholder="e.g. Available, Low Stock, Reserved" value={edit.status||""} onChange={e=>setEdit({...edit,status:e.target.value})}/></Field><Btn className="w-full justify-center mt-2" onClick={saveEdit}><Check size={15}/> Save Changes</Btn></>}</Modal>
-    <Modal open={!!deleteCheck} onClose={()=>!deleteLoading&&setDeleteCheck(null)} title={deleteCheck?.error ? "Unable to Check Stock" : deleteCheck?.canDelete ? "Delete Stock Record?" : "Stock Record Cannot Be Deleted"}>
+    <Modal open={open} onClose={() => setOpen(false)} title="Add Stock Item"><Field label="Item"><ItemAutocomplete items={masters?.items || []} value={form.item} onChange={v => setForm(f => ({ ...f, item: v, specification: "" }))} specification={form.specification} onSpecificationChange={v => setForm(f => ({ ...f, specification: v }))} /></Field><QuantityFields units={masters?.units || []} value={form.quantityValue} unit={form.quantityUnit} onValue={v => setForm({ ...form, quantityValue: v })} onUnit={v => setForm({ ...form, quantityUnit: v })} /><Field label="Avg. Cost/Kg"><input type="number" min="0" className={inputCls} value={form.avgCost} onChange={e => setForm({ ...form, avgCost: e.target.value })} /></Field><Field label="Selling Price/Kg"><input type="number" className={inputCls} value={form.sellingPrice} onChange={e => setForm({ ...form, sellingPrice: e.target.value })} /></Field><Field label="Stock Status"><input className={inputCls} placeholder="e.g. Available, Low Stock, Reserved" value={form.status} onChange={e => setForm({ ...form, status: e.target.value })} /></Field><Btn className="w-full justify-center mt-2" onClick={add}><Check size={15} /> Save Item</Btn></Modal>
+    <Modal open={!!edit} onClose={() => setEdit(null)} title="Edit Stock Item">{edit && <><p className="text-sm text-gray-600 mb-4">{itemLabel(edit.item, masters, language)} · {fmtKg(edit.qty)} in stock</p><Field label="Selling Price/Kg"><input type="number" className={inputCls} value={edit.sellingPrice ?? ""} onChange={e => setEdit({ ...edit, sellingPrice: e.target.value })} /></Field><Field label="Stock Status"><input className={inputCls} placeholder="e.g. Available, Low Stock, Reserved" value={edit.status || ""} onChange={e => setEdit({ ...edit, status: e.target.value })} /></Field><Btn className="w-full justify-center mt-2" onClick={saveEdit}><Check size={15} /> Save Changes</Btn></>}</Modal>
+    <Modal open={!!deleteCheck} onClose={() => !deleteLoading && setDeleteCheck(null)} title={deleteCheck?.error ? "Unable to Check Stock" : deleteCheck?.canDelete ? "Delete Stock Record?" : "Stock Record Cannot Be Deleted"}>
       {deleteCheck && <div className="space-y-4">
         {deleteCheck.error ? <>
           <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{deleteCheck.error}</div>
-          <div className="flex justify-end"><button type="button" className="px-4 py-2 rounded-lg bg-gray-800 text-white" onClick={()=>setDeleteCheck(null)}>Close</button></div>
+          <div className="flex justify-end"><button type="button" className="px-4 py-2 rounded-lg bg-gray-800 text-white" onClick={() => setDeleteCheck(null)}>Close</button></div>
         </> : <>
           <div className={`rounded-xl border p-4 ${deleteCheck.canDelete ? "border-emerald-200 bg-emerald-50" : "border-amber-200 bg-amber-50"}`}>
             <p className={`font-semibold ${deleteCheck.canDelete ? "text-emerald-800" : "text-amber-900"}`}>{deleteCheck.canDelete ? "Safe to delete" : "Keep this inventory record"}</p>
@@ -1909,11 +1956,11 @@ function StockPage({ stock, setStock, refresh, masters }) {
             <p className="text-sm text-gray-500 mt-1">Current stock: <span className="font-medium text-gray-700">{fmtKg(deleteCheck.qty)}</span></p>
           </div>
           {Object.keys(deleteCheck.history || {}).length > 0 && <div className="grid grid-cols-3 gap-2 text-center">
-            {[['purchase','Purchases'],['sale','Sales'],['opening','Opening']].map(([key,label]) => <div key={key} className="rounded-lg border border-gray-100 p-2"><p className="text-[10px] uppercase text-gray-400">{label}</p><p className="font-semibold text-gray-700">{deleteCheck.history?.[key] || 0}</p></div>)}
+            {[['purchase', 'Purchases'], ['sale', 'Sales'], ['opening', 'Opening']].map(([key, label]) => <div key={key} className="rounded-lg border border-gray-100 p-2"><p className="text-[10px] uppercase text-gray-400">{label}</p><p className="font-semibold text-gray-700">{deleteCheck.history?.[key] || 0}</p></div>)}
           </div>}
           {!deleteCheck.canDelete && <div className="rounded-xl bg-blue-50 border border-blue-100 p-3 text-sm text-blue-900"><strong>Recommended:</strong> edit or reverse the related purchase/sale instead of deleting this stock row. This keeps the inventory ledger consistent.</div>}
           <div className="flex justify-end gap-2 pt-1">
-            <button type="button" className="px-4 py-2 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50" disabled={deleteLoading} onClick={()=>setDeleteCheck(null)}>Cancel</button>
+            <button type="button" className="px-4 py-2 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50" disabled={deleteLoading} onClick={() => setDeleteCheck(null)}>Cancel</button>
             {deleteCheck.canDelete && <button type="button" className="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 disabled:opacity-50" disabled={deleteLoading} onClick={confirmStockDelete}>{deleteLoading ? "Deleting…" : "Delete Stock Record"}</button>}
           </div>
         </>}
@@ -1928,56 +1975,56 @@ function StockPage({ stock, setStock, refresh, masters }) {
 
 function SalesPage({ sales, setSales, customers, payments = [], refresh, masters, stock = [], mandiPurchases = [], localPurchases = [] }) {
   const language = useLanguage();
-  const [open,setOpen]=useState(false),[edit,setEdit]=useState(null),[paymentDetails,setPaymentDetails]=useState(null),[search,setSearch]=useState(""),[statusFilter,setStatusFilter]=useState(""),[from,setFrom]=useState(""),[to,setTo]=useState("");
-  const [form,setForm]=useState({date:todayStr(),customer:"",phone:"",status:"Due",paymentMethod:"Cash",paymentProof:null,transactionId:""});
-  const [lines,setLines]=useState([blankSaleLine(masters?.units || [])]);
-  const filteredSales=useMemo(()=>sales.filter(r=>textMatch(r,["customer","phone","item","specification","status","payment_method"],search)&&(!statusFilter||r.status===statusFilter)&&dateMatch(r,from,to)),[sales,search,statusFilter,from,to]);
-  const total=filteredSales.reduce((s,r)=>s+Number(r.amount||0),0);
+  const [open, setOpen] = useState(false), [edit, setEdit] = useState(null), [paymentDetails, setPaymentDetails] = useState(null), [search, setSearch] = useState(""), [statusFilter, setStatusFilter] = useState(""), [from, setFrom] = useState(""), [to, setTo] = useState("");
+  const [form, setForm] = useState({ date: todayStr(), customer: "", phone: "", status: "Due", paymentMethod: "Cash", paymentProof: null, transactionId: "" });
+  const [lines, setLines] = useState([blankSaleLine(masters?.units || [])]);
+  const filteredSales = useMemo(() => sales.filter(r => textMatch(r, ["customer", "phone", "item", "specification", "status", "payment_method"], search) && (!statusFilter || r.status === statusFilter) && dateMatch(r, from, to)), [sales, search, statusFilter, from, to]);
+  const total = filteredSales.reduce((s, r) => s + Number(r.amount || 0), 0);
   const salesItems = useMemo(() => (masters?.items || []).filter(i => i.active !== false), [masters]);
-  const clearFilters=()=>{setSearch("");setStatusFilter("");setFrom("");setTo("");};
-  const resetForm=()=>{setForm({date:todayStr(),customer:"",phone:"",status:"Due",paymentMethod:"Cash",paymentProof:null,transactionId:""});setLines([blankSaleLine(masters?.units || [])]);};
-  const add=async()=>{
-    if(!form.customer||!lines.length)return appAlert("Customer and at least one item are required.");
-    if(lines.some(line=>!line.item||!line.quantityValue||!line.rate))return appAlert("Every item needs an item name, quantity and rate.");
-    if(form.status==="Paid"&&form.paymentMethod==="Bank"&&!String(form.transactionId||"").trim())return appAlert("Transaction ID is required for Bank payments.");
-    try{
-      await api.create("sales",{date:form.date,customer:form.customer,phone:form.phone,items:lines.map(line=>({...line,quantityValue:Number(line.quantityValue),rate:Number(line.rate)})),status:form.status,paymentMethod:form.status==="Paid"?form.paymentMethod:null,paymentProof:form.status==="Paid"&&form.paymentMethod==="UPI"?form.paymentProof:null,transactionId:form.status==="Paid"&&form.paymentMethod==="Bank"?String(form.transactionId||"").trim():null});
-      await refresh();setOpen(false);resetForm();
-    }catch(err){appAlert("Couldn't save this sale.\n"+err.message)}
+  const clearFilters = () => { setSearch(""); setStatusFilter(""); setFrom(""); setTo(""); };
+  const resetForm = () => { setForm({ date: todayStr(), customer: "", phone: "", status: "Due", paymentMethod: "Cash", paymentProof: null, transactionId: "" }); setLines([blankSaleLine(masters?.units || [])]); };
+  const add = async () => {
+    if (!form.customer || !lines.length) return appAlert("Customer and at least one item are required.");
+    if (lines.some(line => !line.item || !line.quantityValue || !line.rate)) return appAlert("Every item needs an item name, quantity and rate.");
+    if (form.status === "Paid" && form.paymentMethod === "Bank" && !String(form.transactionId || "").trim()) return appAlert("Transaction ID is required for Bank payments.");
+    try {
+      await api.create("sales", { date: form.date, customer: form.customer, phone: form.phone, items: lines.map(line => ({ ...line, quantityValue: Number(line.quantityValue), rate: Number(line.rate) })), status: form.status, paymentMethod: form.status === "Paid" ? form.paymentMethod : null, paymentProof: form.status === "Paid" && form.paymentMethod === "UPI" ? form.paymentProof : null, transactionId: form.status === "Paid" && form.paymentMethod === "Bank" ? String(form.transactionId || "").trim() : null });
+      await refresh(); setOpen(false); resetForm();
+    } catch (err) { appAlert("Couldn't save this sale.\n" + err.message) }
   };
-  const del=async id=>{if(!await appConfirm("Delete this sale? The sold quantity will be returned to stock and customer due will be recalculated."))return;try{await api.remove("sales",id);await refresh()}catch(err){appAlert("Couldn't delete this sale.\n"+err.message)}};
-  const saveEdit=async()=>{
-    if(!edit)return;
-    if(edit.status==="Paid"&&edit.paymentMethod==="Bank"&&!String(edit.transactionId||"").trim())return appAlert("Transaction ID is required for Bank payments.");
-    try{await api.update("sales",edit.id,{status:edit.status,phone:edit.phone,paymentMethod:edit.status==="Paid"?(edit.paymentMethod||"Cash"):null,paymentProof:edit.status==="Paid"&&edit.paymentMethod==="UPI"?(edit.paymentProof||null):null,transactionId:edit.status==="Paid"&&edit.paymentMethod==="Bank"?String(edit.transactionId||"").trim():null});await refresh();setEdit(null)}catch(err){appAlert("Couldn't update sale.\n"+err.message)}
+  const del = async id => { if (!await appConfirm("Delete this sale? The sold quantity will be returned to stock and customer due will be recalculated.")) return; try { await api.remove("sales", id); await refresh() } catch (err) { appAlert("Couldn't delete this sale.\n" + err.message) } };
+  const saveEdit = async () => {
+    if (!edit) return;
+    if (edit.status === "Paid" && edit.paymentMethod === "Bank" && !String(edit.transactionId || "").trim()) return appAlert("Transaction ID is required for Bank payments.");
+    try { await api.update("sales", edit.id, { status: edit.status, phone: edit.phone, paymentMethod: edit.status === "Paid" ? (edit.paymentMethod || "Cash") : null, paymentProof: edit.status === "Paid" && edit.paymentMethod === "UPI" ? (edit.paymentProof || null) : null, transactionId: edit.status === "Paid" && edit.paymentMethod === "Bank" ? String(edit.transactionId || "").trim() : null }); await refresh(); setEdit(null) } catch (err) { appAlert("Couldn't update sale.\n" + err.message) }
   };
   return <div className="space-y-5">
-    <div className="flex flex-wrap gap-4"><StatCard icon={Truck} color="blue" label="Total Sales" value={fmt(total)} sub={`${filteredSales.length} of ${sales.length} entries`}/><StatCard icon={Boxes} color="green" label="Total Quantity Sold" value={fmtKg(filteredSales.reduce((s,r)=>s+Number(r.qty||0),0))}/><StatCard icon={Wallet} color="orange" label="Sales on Due" value={fmt(filteredSales.filter(r=>r.status==="Due").reduce((s,r)=>s+Number(r.amount||0),0))}/></div>
-    <Panel title="Sales / Supply Entries" action={<Btn onClick={()=>setOpen(true)}><Plus size={15}/> New Supply (Sale)</Btn>}>
-      <FilterBar search={search} setSearch={setSearch} placeholder="Search customer, mobile, item, specification…" onClear={clearFilters}><select className={inputCls+" !w-auto bg-white"} value={statusFilter} onChange={e=>setStatusFilter(e.target.value)}><option value="">All Statuses</option><option>Due</option><option>Paid</option></select><DateFilters from={from} setFrom={setFrom} to={to} setTo={setTo}/></FilterBar>
-      <DataTable onDelete={del} onEdit={r=>setEdit({...r,phone:(customers.find(c=>c.name.trim().toLowerCase()===r.customer.trim().toLowerCase())||{}).phone||"",paymentMethod:r.payment_method||r.paymentMethod||"Cash",paymentProof:r.payment_proof||r.paymentProof||null,transactionId:r.transaction_id||r.transactionId||""})} columns={[
-        {key:"date",label:"Date"},
-        {key:"customer",label:"Customer"},
-        {key:"item",label:"Item",render:r=><span>{itemLabel(r.item, masters, language)}{r.specification&&<span className="text-xs text-gray-400 block">{r.specification}</span>}</span>},
-        {key:"qty",label:"Qty",render:r=>`${r.quantityValue ?? r.qty} ${r.quantityUnit || "Kg"}`},
-        {key:"rate",label:"Rate/Kg",render:r=>fmt(r.rate)},
-        {key:"amount",label:"Amount",render:r=><span className="font-medium">{fmt(r.amount)}</span>},
-        {key:"payment_method",label:"Method",render:r=>r.status==="Paid"?<button type="button" onClick={()=>setPaymentDetails(r)} className="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-medium hover:bg-blue-100">{r.payment_method||r.paymentMethod||"Cash"}</button>:<span className="text-xs text-gray-400">—</span>},
-        {key:"status",label:"Status",render:r=><Badge status={r.status}/>}
-      ]} rows={filteredSales}/>
+    <div className="flex flex-wrap gap-4"><StatCard icon={Truck} color="blue" label="Total Sales" value={fmt(total)} sub={`${filteredSales.length} of ${sales.length} entries`} /><StatCard icon={Boxes} color="green" label="Total Quantity Sold" value={fmtKg(filteredSales.reduce((s, r) => s + Number(r.qty || 0), 0))} /><StatCard icon={Wallet} color="orange" label="Sales on Due" value={fmt(filteredSales.filter(r => r.status === "Due").reduce((s, r) => s + Number(r.amount || 0), 0))} /></div>
+    <Panel title="Sales / Supply Entries" action={<Btn onClick={() => setOpen(true)}><Plus size={15} /> New Supply (Sale)</Btn>}>
+      <FilterBar search={search} setSearch={setSearch} placeholder="Search customer, mobile, item, specification…" onClear={clearFilters}><select className={inputCls + " !w-auto bg-white"} value={statusFilter} onChange={e => setStatusFilter(e.target.value)}><option value="">All Statuses</option><option>Due</option><option>Paid</option></select><DateFilters from={from} setFrom={setFrom} to={to} setTo={setTo} /></FilterBar>
+      <DataTable onDelete={del} onEdit={r => setEdit({ ...r, phone: (customers.find(c => c.name.trim().toLowerCase() === r.customer.trim().toLowerCase()) || {}).phone || "", paymentMethod: r.payment_method || r.paymentMethod || "Cash", paymentProof: r.payment_proof || r.paymentProof || null, transactionId: r.transaction_id || r.transactionId || "" })} columns={[
+        { key: "date", label: "Date" },
+        { key: "customer", label: "Customer" },
+        { key: "item", label: "Item", render: r => <span>{itemLabel(r.item, masters, language)}{r.specification && <span className="text-xs text-gray-400 block">{r.specification}</span>}</span> },
+        { key: "qty", label: "Qty", render: r => `${r.quantityValue ?? r.qty} ${r.quantityUnit || "Kg"}` },
+        { key: "rate", label: "Rate/Kg", render: r => fmt(r.rate) },
+        { key: "amount", label: "Amount", render: r => <span className="font-medium">{fmt(r.amount)}</span> },
+        { key: "payment_method", label: "Method", render: r => r.status === "Paid" ? <button type="button" onClick={() => setPaymentDetails(r)} className="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-medium hover:bg-blue-100">{r.payment_method || r.paymentMethod || "Cash"}</button> : <span className="text-xs text-gray-400">—</span> },
+        { key: "status", label: "Status", render: r => <Badge status={r.status} /> }
+      ]} rows={filteredSales} />
     </Panel>
-    <Modal open={!!edit} onClose={()=>setEdit(null)} title="Edit Sale / Customer Contact">{edit&&<><p className="text-sm text-gray-600 mb-4">{edit.customer} · {itemLabel(edit.item, masters, language)} · {fmt(edit.amount)}</p><Field label="Customer Mobile Number"><input type="tel" className={inputCls} placeholder="10 digit mobile number" value={edit.phone||""} onChange={e=>setEdit({...edit,phone:e.target.value})}/></Field><Field label="Payment Status"><select className={inputCls} value={edit.status} onChange={e=>setEdit({...edit,status:e.target.value,paymentMethod:e.target.value==="Paid"?(edit.paymentMethod||"Cash"):"Cash",paymentProof:e.target.value==="Paid"?edit.paymentProof:null,transactionId:e.target.value==="Paid"?(edit.transactionId||""):""})}><option>Due</option><option>Paid</option></select></Field>{edit.status==="Paid"&&<><Field label="Payment Method"><select className={inputCls} value={edit.paymentMethod||"Cash"} onChange={e=>setEdit({...edit,paymentMethod:e.target.value,paymentProof:e.target.value==="UPI"?edit.paymentProof:null,transactionId:e.target.value==="Bank"?(edit.transactionId||""):""})}><option>Cash</option><option>UPI</option><option>Bank</option></select></Field>{edit.paymentMethod==="UPI"&&<PaymentProofField value={edit.paymentProof} onChange={v=>setEdit({...edit,paymentProof:v})}/>} {edit.paymentMethod==="Bank"&&<Field label="Transaction ID"><input type="text" className={inputCls} value={edit.transactionId||""} onChange={e=>setEdit({...edit,transactionId:e.target.value})} placeholder="Enter bank transaction ID"/></Field>}</>}<Btn className="w-full justify-center mt-2" onClick={saveEdit}><Check size={15}/> Save Sale</Btn></>}</Modal>
-    <Modal open={open} onClose={()=>{setOpen(false);resetForm()}} title="New Supply (Sale)">
-      <Field label="Date"><input type="date" className={inputCls} value={form.date} onChange={e=>setForm({...form,date:e.target.value})}/></Field>
-      <div className="grid grid-cols-[1fr_150px] gap-3"><Field label="Customer"><input className={inputCls} list="sale-customers" value={form.customer} onChange={e=>{const value=e.target.value;const c=customers.find(x=>String(x.name||'').trim().toLowerCase()===value.trim().toLowerCase());setForm({...form,customer:value,phone:c?.phone||form.phone})}} placeholder="Customer name"/><datalist id="sale-customers">{customers.map(c=><option key={c.id} value={c.name}/>)}</datalist></Field><Field label="Mobile"><input className={inputCls} value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})} placeholder="10 digit mobile"/></Field></div>
-      <MultiSaleLines lines={lines} setLines={setLines} masters={masters}/>
-      <div className="mt-3 border-t border-gray-100 pt-3"><Field label="Payment Status"><select className={inputCls} value={form.status} onChange={e=>setForm({...form,status:e.target.value,paymentMethod:e.target.value==="Paid"?(form.paymentMethod||"Cash"):"Cash",paymentProof:e.target.value==="Paid"&&form.paymentMethod==="UPI"?form.paymentProof:null,transactionId:e.target.value==="Paid"&&form.paymentMethod==="Bank"?form.transactionId:""})}><option>Due</option><option>Paid</option></select></Field>
-      {form.status==="Paid"&&<Field label="Payment Method"><select className={inputCls} value={form.paymentMethod} onChange={e=>setForm({...form,paymentMethod:e.target.value,paymentProof:e.target.value==="UPI"?form.paymentProof:null,transactionId:e.target.value==="Bank"?form.transactionId:""})}><option>Cash</option><option>UPI</option><option>Bank</option></select></Field>}
-      {form.status==="Paid"&&form.paymentMethod==="UPI"&&<PaymentProofField value={form.paymentProof} onChange={v=>setForm({...form,paymentProof:v})}/>} {form.status==="Paid"&&form.paymentMethod==="Bank"&&<Field label="Transaction ID"><input type="text" className={inputCls} value={form.transactionId||""} onChange={e=>setForm({...form,transactionId:e.target.value})} placeholder="Enter bank transaction ID"/></Field>}</div>
-      <Btn className="w-full justify-center mt-3" onClick={add}><Check size={15}/> Save Sale</Btn>
+    <Modal open={!!edit} onClose={() => setEdit(null)} title="Edit Sale / Customer Contact">{edit && <><p className="text-sm text-gray-600 mb-4">{edit.customer} · {itemLabel(edit.item, masters, language)} · {fmt(edit.amount)}</p><Field label="Customer Mobile Number"><input type="tel" className={inputCls} placeholder="10 digit mobile number" value={edit.phone || ""} onChange={e => setEdit({ ...edit, phone: e.target.value })} /></Field><Field label="Payment Status"><select className={inputCls} value={edit.status} onChange={e => setEdit({ ...edit, status: e.target.value, paymentMethod: e.target.value === "Paid" ? (edit.paymentMethod || "Cash") : "Cash", paymentProof: e.target.value === "Paid" ? edit.paymentProof : null, transactionId: e.target.value === "Paid" ? (edit.transactionId || "") : "" })}><option>Due</option><option>Paid</option></select></Field>{edit.status === "Paid" && <><Field label="Payment Method"><select className={inputCls} value={edit.paymentMethod || "Cash"} onChange={e => setEdit({ ...edit, paymentMethod: e.target.value, paymentProof: e.target.value === "UPI" ? edit.paymentProof : null, transactionId: e.target.value === "Bank" ? (edit.transactionId || "") : "" })}><option>Cash</option><option>UPI</option><option>Bank</option></select></Field>{edit.paymentMethod === "UPI" && <PaymentProofField value={edit.paymentProof} onChange={v => setEdit({ ...edit, paymentProof: v })} />} {edit.paymentMethod === "Bank" && <Field label="Transaction ID"><input type="text" className={inputCls} value={edit.transactionId || ""} onChange={e => setEdit({ ...edit, transactionId: e.target.value })} placeholder="Enter bank transaction ID" /></Field>}</>}<Btn className="w-full justify-center mt-2" onClick={saveEdit}><Check size={15} /> Save Sale</Btn></>}</Modal>
+    <Modal open={open} onClose={() => { setOpen(false); resetForm() }} title="New Supply (Sale)">
+      <Field label="Date"><input type="date" className={inputCls} value={form.date} onChange={e => setForm({ ...form, date: e.target.value })} /></Field>
+      <div className="grid grid-cols-[1fr_150px] gap-3"><Field label="Customer"><input className={inputCls} list="sale-customers" value={form.customer} onChange={e => { const value = e.target.value; const c = customers.find(x => String(x.name || '').trim().toLowerCase() === value.trim().toLowerCase()); setForm({ ...form, customer: value, phone: c?.phone || form.phone }) }} placeholder="Customer name" /><datalist id="sale-customers">{customers.map(c => <option key={c.id} value={c.name} />)}</datalist></Field><Field label="Mobile"><input className={inputCls} value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} placeholder="10 digit mobile" /></Field></div>
+      <MultiSaleLines lines={lines} setLines={setLines} masters={masters} />
+      <div className="mt-3 border-t border-gray-100 pt-3"><Field label="Payment Status"><select className={inputCls} value={form.status} onChange={e => setForm({ ...form, status: e.target.value, paymentMethod: e.target.value === "Paid" ? (form.paymentMethod || "Cash") : "Cash", paymentProof: e.target.value === "Paid" && form.paymentMethod === "UPI" ? form.paymentProof : null, transactionId: e.target.value === "Paid" && form.paymentMethod === "Bank" ? form.transactionId : "" })}><option>Due</option><option>Paid</option></select></Field>
+        {form.status === "Paid" && <Field label="Payment Method"><select className={inputCls} value={form.paymentMethod} onChange={e => setForm({ ...form, paymentMethod: e.target.value, paymentProof: e.target.value === "UPI" ? form.paymentProof : null, transactionId: e.target.value === "Bank" ? form.transactionId : "" })}><option>Cash</option><option>UPI</option><option>Bank</option></select></Field>}
+        {form.status === "Paid" && form.paymentMethod === "UPI" && <PaymentProofField value={form.paymentProof} onChange={v => setForm({ ...form, paymentProof: v })} />} {form.status === "Paid" && form.paymentMethod === "Bank" && <Field label="Transaction ID"><input type="text" className={inputCls} value={form.transactionId || ""} onChange={e => setForm({ ...form, transactionId: e.target.value })} placeholder="Enter bank transaction ID" /></Field>}</div>
+      <Btn className="w-full justify-center mt-3" onClick={add}><Check size={15} /> Save Sale</Btn>
     </Modal>
 
-    <Panel title="Recent Payments"><DataTable columns={[{key:"date",label:"Date"},{key:"customer",label:"Customer"},{key:"sale_item",label:"Item",render:r=><span>{r.sale_item||"Customer Payment"}{r.sale_specification&&<span className="text-xs text-gray-400 block">{r.sale_specification}</span>}</span>},{key:"amount",label:"Amount",render:r=><span className="font-medium">{fmt(r.amount)}</span>},{key:"payment_method",label:"Method",render:r=><Badge status={r.payment_method||"Cash"}/>},{key:"sale_id",label:"Type",render:r=><span className="text-xs text-gray-500">{r.sale_id||r.source_sale_id?"Sale Payment":"Customer Payment"}</span>},{key:"payment_proof",label:"Proof",render:r=>r.payment_proof?<a href={r.payment_proof} target="_blank" rel="noopener noreferrer" className="text-xs text-green-700 hover:underline">View screenshot</a>:<span className="text-xs text-gray-400">—</span>},{key:"transaction_id",label:"Transaction ID",render:r=>r.transaction_id?<span className="text-xs font-medium break-all">{r.transaction_id}</span>:<span className="text-xs text-gray-400">—</span>},{key:"note",label:"Note",render:r=>r.note||"—"}]} rows={payments.slice(0,30)}/></Panel>
+    <Panel title="Recent Payments"><DataTable columns={[{ key: "date", label: "Date" }, { key: "customer", label: "Customer" }, { key: "sale_item", label: "Item", render: r => <span>{r.sale_item || "Customer Payment"}{r.sale_specification && <span className="text-xs text-gray-400 block">{r.sale_specification}</span>}</span> }, { key: "amount", label: "Amount", render: r => <span className="font-medium">{fmt(r.amount)}</span> }, { key: "payment_method", label: "Method", render: r => <Badge status={r.payment_method || "Cash"} /> }, { key: "sale_id", label: "Type", render: r => <span className="text-xs text-gray-500">{r.sale_id || r.source_sale_id ? "Sale Payment" : "Customer Payment"}</span> }, { key: "payment_proof", label: "Proof", render: r => r.payment_proof ? <a href={r.payment_proof} target="_blank" rel="noopener noreferrer" className="text-xs text-green-700 hover:underline">View screenshot</a> : <span className="text-xs text-gray-400">—</span> }, { key: "transaction_id", label: "Transaction ID", render: r => r.transaction_id ? <span className="text-xs font-medium break-all">{r.transaction_id}</span> : <span className="text-xs text-gray-400">—</span> }, { key: "note", label: "Note", render: r => r.note || "—" }]} rows={payments.slice(0, 30)} /></Panel>
   </div>;
 }
 
@@ -2100,7 +2147,7 @@ function PaymentsPage({
       sales.filter(
         s =>
           String(s.customer || "").trim().toLowerCase() ===
-            String(customer?.name || "").trim().toLowerCase() &&
+          String(customer?.name || "").trim().toLowerCase() &&
           String(s.status || "").toLowerCase() === "due"
       ),
     [sales, customer]
@@ -2125,14 +2172,14 @@ function PaymentsPage({
 
   const saleDue = selectedSale
     ? Math.max(
-        0,
-        Number(
-          selectedSale.total ||
-            selectedSale.amount ||
-            selectedSale.grand_total ||
-            0
-        ) - salePaid(selectedSale.id)
-      )
+      0,
+      Number(
+        selectedSale.total ||
+        selectedSale.amount ||
+        selectedSale.grand_total ||
+        0
+      ) - salePaid(selectedSale.id)
+    )
     : 0;
 
   const resetForm = () => {
@@ -2178,31 +2225,31 @@ function PaymentsPage({
 
     setSaving(true);
 
-try {
-  await api.createPayment({
-    customerId: form.customerId,
-    saleId: form.saleId || null,
-    date: form.date,
-    amount: Number(form.amount),
-    note: form.note || "",
-    paymentMethod: form.paymentMethod,
-    paymentProof: form.paymentProof || null,
-    transactionId: String(form.transactionId || "").trim() || null,
-  });
+    try {
+      await api.createPayment({
+        customerId: form.customerId,
+        saleId: form.saleId || null,
+        date: form.date,
+        amount: Number(form.amount),
+        note: form.note || "",
+        paymentMethod: form.paymentMethod,
+        paymentProof: form.paymentProof || null,
+        transactionId: String(form.transactionId || "").trim() || null,
+      });
 
-  resetForm();
-  await refresh?.();
-  alert("Payment added successfully");
-} catch (err) {
-  console.error(err);
-  alert(err.message || "Failed to save payment");
-} finally {
-  setSaving(false);
-}
+      resetForm();
+      await refresh?.();
+      alert("Payment added successfully");
+    } catch (err) {
+      console.error(err);
+      alert(err.message || "Failed to save payment");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const deletePayment = async id => {
-  if (!window.confirm("Delete this payment?")) return;
+    if (!window.confirm("Delete this payment?")) return;
 
     try {
       await api.removePayment(id);
@@ -2356,11 +2403,10 @@ try {
                       paymentMethod: method
                     })
                   }
-                  className={`px-4 py-2 rounded-lg border ${
-                    form.paymentMethod === method
+                  className={`px-4 py-2 rounded-lg border ${form.paymentMethod === method
                       ? "bg-black text-white"
                       : "bg-white"
-                  }`}
+                    }`}
                 >
                   {method}
                 </button>
@@ -2590,13 +2636,13 @@ try {
 --------------------------------------------------------------- */
 
 function ExpensesPage({ expenses, setExpenses, refresh, masters }) {
-  const [open,setOpen]=useState(false),[search,setSearch]=useState(""),[from,setFrom]=useState(""),[to,setTo]=useState("");
-  const [form,setForm]=useState({date:todayStr(),category:"",note:"",amount:""});
-  const filtered=useMemo(()=>expenses.filter(e=>textMatch(e,["category","note"],search)&&dateMatch(e,from,to)),[expenses,search,from,to]);
-  const total=filtered.reduce((s,e)=>s+Number(e.amount||0),0); const clear=()=>{setSearch("");setFrom("");setTo("");};
-  const add=async()=>{if(!form.category||!form.amount)return;try{const created=await api.create("expenses",{...form,amount:Number(form.amount)});setExpenses([created,...expenses]);await refresh();setForm({date:todayStr(),category:"",note:"",amount:""});setOpen(false)}catch(err){appAlert("Couldn't save this expense.\n"+err.message)}};
-  const del=async id=>{setExpenses(expenses.filter(e=>e.id!==id));try{await api.remove("expenses",id)}catch(err){appAlert("Couldn't delete on the server — reload to resync.\n"+err.message)}};
-  return <div className="space-y-5"><div className="flex flex-wrap gap-4"><StatCard icon={Receipt} color="orange" label="Total Expenses" value={fmt(total)} sub={`${filtered.length} of ${expenses.length} entries`}/></div><Panel title="Expense Log" action={<Btn onClick={()=>setOpen(true)}><Plus size={15}/> Add Expense</Btn>}><FilterBar search={search} setSearch={setSearch} placeholder="Search category or note…" onClear={clear}><DateFilters from={from} setFrom={setFrom} to={to} setTo={setTo}/></FilterBar><DataTable onDelete={del} columns={[{key:"date",label:"Date"},{key:"category",label:"Category"},{key:"note",label:"Note",render:r=>r.note||"—"},{key:"amount",label:"Amount",render:r=><span className="font-medium text-gray-800">{fmt(r.amount)}</span>}]} rows={filtered}/></Panel><Modal open={open} onClose={()=>setOpen(false)} title="Add Expense"><Field label="Date"><input type="date" className={inputCls} value={form.date} onChange={e=>setForm({...form,date:e.target.value})}/></Field><Field label="Category"><input className={inputCls} list="expense-categories" placeholder="e.g. Transport Fare" value={form.category} onChange={e=>setForm({...form,category:e.target.value})}/><datalist id="expense-categories">{(masters?.expenseCategories||[]).map(c=><option key={c.id} value={c.name}/>)}</datalist></Field><Field label="Note (optional)"><input className={inputCls} value={form.note} onChange={e=>setForm({...form,note:e.target.value})}/></Field><Field label="Amount (₹)"><input type="number" className={inputCls} value={form.amount} onChange={e=>setForm({...form,amount:e.target.value})}/></Field><Btn className="w-full justify-center mt-2" onClick={add}><Check size={15}/> Save Expense</Btn></Modal></div>;
+  const [open, setOpen] = useState(false), [search, setSearch] = useState(""), [from, setFrom] = useState(""), [to, setTo] = useState("");
+  const [form, setForm] = useState({ date: todayStr(), category: "", note: "", amount: "" });
+  const filtered = useMemo(() => expenses.filter(e => textMatch(e, ["category", "note"], search) && dateMatch(e, from, to)), [expenses, search, from, to]);
+  const total = filtered.reduce((s, e) => s + Number(e.amount || 0), 0); const clear = () => { setSearch(""); setFrom(""); setTo(""); };
+  const add = async () => { if (!form.category || !form.amount) return; try { const created = await api.create("expenses", { ...form, amount: Number(form.amount) }); setExpenses([created, ...expenses]); await refresh(); setForm({ date: todayStr(), category: "", note: "", amount: "" }); setOpen(false) } catch (err) { appAlert("Couldn't save this expense.\n" + err.message) } };
+  const del = async id => { setExpenses(expenses.filter(e => e.id !== id)); try { await api.remove("expenses", id) } catch (err) { appAlert("Couldn't delete on the server — reload to resync.\n" + err.message) } };
+  return <div className="space-y-5"><div className="flex flex-wrap gap-4"><StatCard icon={Receipt} color="orange" label="Total Expenses" value={fmt(total)} sub={`${filtered.length} of ${expenses.length} entries`} /></div><Panel title="Expense Log" action={<Btn onClick={() => setOpen(true)}><Plus size={15} /> Add Expense</Btn>}><FilterBar search={search} setSearch={setSearch} placeholder="Search category or note…" onClear={clear}><DateFilters from={from} setFrom={setFrom} to={to} setTo={setTo} /></FilterBar><DataTable onDelete={del} columns={[{ key: "date", label: "Date" }, { key: "category", label: "Category" }, { key: "note", label: "Note", render: r => r.note || "—" }, { key: "amount", label: "Amount", render: r => <span className="font-medium text-gray-800">{fmt(r.amount)}</span> }]} rows={filtered} /></Panel><Modal open={open} onClose={() => setOpen(false)} title="Add Expense"><Field label="Date"><input type="date" className={inputCls} value={form.date} onChange={e => setForm({ ...form, date: e.target.value })} /></Field><Field label="Category"><input className={inputCls} list="expense-categories" placeholder="e.g. Transport Fare" value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} /><datalist id="expense-categories">{(masters?.expenseCategories || []).map(c => <option key={c.id} value={c.name} />)}</datalist></Field><Field label="Note (optional)"><input className={inputCls} value={form.note} onChange={e => setForm({ ...form, note: e.target.value })} /></Field><Field label="Amount (₹)"><input type="number" className={inputCls} value={form.amount} onChange={e => setForm({ ...form, amount: e.target.value })} /></Field><Btn className="w-full justify-center mt-2" onClick={add}><Check size={15} /> Save Expense</Btn></Modal></div>;
 }
 
 /* ---------------------------------------------------------------
@@ -2674,22 +2720,22 @@ function LabourPage({ labour, setLabour, refresh }) {
 
 function ReportsPage({ data }) {
   const language = useLanguage();
-  const firstOfMonth = () => { const t=todayStr(); return `${t.slice(0,8)}01`; };
-  const [from,setFrom]=useState(firstOfMonth), [to,setTo]=useState(todayStr()), [report,setReport]=useState(null), [loading,setLoading]=useState(true);
-  const load=async(f=from,t=to)=>{setLoading(true);try{setReport(await api.getOverview(f,t));}catch(e){appAlert("Couldn't load report.\n"+e.message);}finally{setLoading(false);}};
-  useEffect(()=>{load();},[]);
-  const monthly=()=>{const now=todayStr();const [y,m]=now.split("-").map(Number);const f=`${y}-${String(m).padStart(2,"0")}-01`;const last=new Date(Date.UTC(y,m,0,12));const t=localDateStr(last);setFrom(f);setTo(t);load(f,t);};
-  const topDemand=(report?.items||[]).slice().sort((a,b)=>b.sold_qty-a.sold_qty).slice(0,8);
-  const topProfit=(report?.items||[]).slice().sort((a,b)=>b.profit-a.profit).slice(0,8);
-  const purchase=(report?.items||[]).filter(i=>i.recommendation!=="Hold").sort((a,b)=>({URGENT:0,HIGH:1,MEDIUM:2}[a.priority]-({URGENT:0,HIGH:1,MEDIUM:2}[b.priority])||b.profit-a.profit));
-  const totals=report?.totals||{};
+  const firstOfMonth = () => { const t = todayStr(); return `${t.slice(0, 8)}01`; };
+  const [from, setFrom] = useState(firstOfMonth), [to, setTo] = useState(todayStr()), [report, setReport] = useState(null), [loading, setLoading] = useState(true);
+  const load = async (f = from, t = to) => { setLoading(true); try { setReport(await api.getOverview(f, t)); } catch (e) { appAlert("Couldn't load report.\n" + e.message); } finally { setLoading(false); } };
+  useEffect(() => { load(); }, []);
+  const monthly = () => { const now = todayStr(); const [y, m] = now.split("-").map(Number); const f = `${y}-${String(m).padStart(2, "0")}-01`; const last = new Date(Date.UTC(y, m, 0, 12)); const t = localDateStr(last); setFrom(f); setTo(t); load(f, t); };
+  const topDemand = (report?.items || []).slice().sort((a, b) => b.sold_qty - a.sold_qty).slice(0, 8);
+  const topProfit = (report?.items || []).slice().sort((a, b) => b.profit - a.profit).slice(0, 8);
+  const purchase = (report?.items || []).filter(i => i.recommendation !== "Hold").sort((a, b) => ({ URGENT: 0, HIGH: 1, MEDIUM: 2 }[a.priority] - ({ URGENT: 0, HIGH: 1, MEDIUM: 2 }[b.priority]) || b.profit - a.profit));
+  const totals = report?.totals || {};
   return <div className="space-y-5">
-    <Panel title="Business Overview" action={<div className="flex flex-wrap gap-2"><input type="date" className={inputCls+" !w-auto"} value={from} onChange={e=>setFrom(e.target.value)}/><input type="date" className={inputCls+" !w-auto"} value={to} onChange={e=>setTo(e.target.value)}/><Btn onClick={()=>load()}><RefreshCw size={14}/> Apply</Btn><Btn variant="outline" onClick={monthly}>This Month</Btn></div>}>
-      {loading?<p className="text-sm text-gray-400 py-8 text-center">Calculating from database…</p>:<><div className="grid grid-cols-2 md:grid-cols-5 gap-3"><StatCard icon={Truck} color="blue" label="Sales" value={fmt(totals.sales)}/><StatCard icon={ShoppingBasket} color="green" label="Purchase" value={fmt(totals.purchase)}/><StatCard icon={Boxes} color="teal" label="Sold Quantity" value={fmtKg(totals.sold_qty)}/><StatCard icon={Receipt} color="orange" label="COGS" value={fmt(totals.cogs)}/><StatCard icon={CircleDollarSign} color="purple" label="Gross Profit" value={fmt(totals.profit)}/></div></>}
+    <Panel title="Business Overview" action={<div className="flex flex-wrap gap-2"><input type="date" className={inputCls + " !w-auto"} value={from} onChange={e => setFrom(e.target.value)} /><input type="date" className={inputCls + " !w-auto"} value={to} onChange={e => setTo(e.target.value)} /><Btn onClick={() => load()}><RefreshCw size={14} /> Apply</Btn><Btn variant="outline" onClick={monthly}>This Month</Btn></div>}>
+      {loading ? <p className="text-sm text-gray-400 py-8 text-center">Calculating from database…</p> : <><div className="grid grid-cols-2 md:grid-cols-5 gap-3"><StatCard icon={Truck} color="blue" label="Sales" value={fmt(totals.sales)} /><StatCard icon={ShoppingBasket} color="green" label="Purchase" value={fmt(totals.purchase)} /><StatCard icon={Boxes} color="teal" label="Sold Quantity" value={fmtKg(totals.sold_qty)} /><StatCard icon={Receipt} color="orange" label="COGS" value={fmt(totals.cogs)} /><StatCard icon={CircleDollarSign} color="purple" label="Gross Profit" value={fmt(totals.profit)} /></div></>}
     </Panel>
-    {!loading&&<><Panel title={`${language === "hi" ? "दिनांकवार अवलोकन" : "Date-wise Overview"} (${from} ${language === "hi" ? "से" : "to"} ${to})`}><DataTable columns={[{key:"date",label:language === "hi" ? "दिनांक" : "Date"},{key:"sales",label:language === "hi" ? "बिक्री" : "Sales",render:r=>fmt(r.sales)},{key:"purchase",label:language === "hi" ? "खरीद" : "Purchase",render:r=>fmt(r.purchase)},{key:"sold_qty",label:language === "hi" ? "बिकी मात्रा" : "Sold",render:r=>fmtKg(r.sold_qty)},{key:"cogs",label:"COGS",render:r=>fmt(r.cogs)},{key:"profit",label:language === "hi" ? "सकल लाभ" : "Gross Profit",render:r=><span className="font-medium text-green-700">{fmt(r.profit)}</span>}]} rows={report.daily.map(r=>({...r,date:r.date?.slice(0,10)}))}/></Panel>
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-5"><Panel title="High-Demand Sabji (by quantity sold)"><DataTable columns={[{key:"item",label:"Sabji",render:r=><span>{itemLabel(r.item, data.masters, language)}{r.specification&&<span className="text-xs text-gray-400 block">{r.specification}</span>}</span>},{key:"sold_qty",label:"Sold",render:r=>fmtKg(r.sold_qty)},{key:"avg_daily_qty",label:"Avg/Day",render:r=>fmtKg(r.avg_daily_qty)}]} rows={topDemand}/></Panel><Panel title="Highest Profit Sabji"><DataTable columns={[{key:"item",label:"Sabji",render:r=><span>{itemLabel(r.item, data.masters, language)}{r.specification&&<span className="text-xs text-gray-400 block">{r.specification}</span>}</span>},{key:"revenue",label:"Revenue",render:r=>fmt(r.revenue)},{key:"profit",label:"Profit",render:r=><span className="font-medium text-green-700">{fmt(r.profit)}</span>},{key:"margin",label:"Margin",render:r=>`${r.margin}%`}]} rows={topProfit}/></Panel></div>
-    <Panel title="What Should I Purchase Next?"><p className="text-xs text-gray-500 mb-3">Recommendations use sales velocity, current stock coverage and profitability. Suggested quantity targets about 7 days of demand.</p><DataTable columns={[{key:"item",label:"Sabji",render:r=><span>{itemLabel(r.item, data.masters, language)}{r.specification&&<span className="text-xs text-gray-400 block">{r.specification}</span>}</span>},{key:"stock_qty",label:"Current Stock",render:r=>fmtKg(r.stock_qty)},{key:"stock_days",label:"Stock Cover",render:r=>r.stock_days===null?"No recent sales":`${r.stock_days} days`},{key:"avg_daily_qty",label:"Demand/Day",render:r=>fmtKg(r.avg_daily_qty)},{key:"profit",label:"Profit",render:r=>fmt(r.profit)},{key:"priority",label:"Priority",render:r=><Badge status={r.priority==='URGENT'?'Overdue':r.priority==='HIGH'?'Due Today':'Upcoming'}/>},{key:"suggested_qty",label:"Suggested Buy",render:r=>fmtKg(r.suggested_qty)}]} rows={purchase}/></Panel>
+    {!loading && <><Panel title={`${language === "hi" ? "दिनांकवार अवलोकन" : "Date-wise Overview"} (${from} ${language === "hi" ? "से" : "to"} ${to})`}><DataTable columns={[{ key: "date", label: language === "hi" ? "दिनांक" : "Date" }, { key: "sales", label: language === "hi" ? "बिक्री" : "Sales", render: r => fmt(r.sales) }, { key: "purchase", label: language === "hi" ? "खरीद" : "Purchase", render: r => fmt(r.purchase) }, { key: "sold_qty", label: language === "hi" ? "बिकी मात्रा" : "Sold", render: r => fmtKg(r.sold_qty) }, { key: "cogs", label: "COGS", render: r => fmt(r.cogs) }, { key: "profit", label: language === "hi" ? "सकल लाभ" : "Gross Profit", render: r => <span className="font-medium text-green-700">{fmt(r.profit)}</span> }]} rows={report.daily.map(r => ({ ...r, date: r.date?.slice(0, 10) }))} /></Panel>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5"><Panel title="High-Demand Sabji (by quantity sold)"><DataTable columns={[{ key: "item", label: "Sabji", render: r => <span>{itemLabel(r.item, data.masters, language)}{r.specification && <span className="text-xs text-gray-400 block">{r.specification}</span>}</span> }, { key: "sold_qty", label: "Sold", render: r => fmtKg(r.sold_qty) }, { key: "avg_daily_qty", label: "Avg/Day", render: r => fmtKg(r.avg_daily_qty) }]} rows={topDemand} /></Panel><Panel title="Highest Profit Sabji"><DataTable columns={[{ key: "item", label: "Sabji", render: r => <span>{itemLabel(r.item, data.masters, language)}{r.specification && <span className="text-xs text-gray-400 block">{r.specification}</span>}</span> }, { key: "revenue", label: "Revenue", render: r => fmt(r.revenue) }, { key: "profit", label: "Profit", render: r => <span className="font-medium text-green-700">{fmt(r.profit)}</span> }, { key: "margin", label: "Margin", render: r => `${r.margin}%` }]} rows={topProfit} /></Panel></div>
+      <Panel title="What Should I Purchase Next?"><p className="text-xs text-gray-500 mb-3">Recommendations use sales velocity, current stock coverage and profitability. Suggested quantity targets about 7 days of demand.</p><DataTable columns={[{ key: "item", label: "Sabji", render: r => <span>{itemLabel(r.item, data.masters, language)}{r.specification && <span className="text-xs text-gray-400 block">{r.specification}</span>}</span> }, { key: "stock_qty", label: "Current Stock", render: r => fmtKg(r.stock_qty) }, { key: "stock_days", label: "Stock Cover", render: r => r.stock_days === null ? "No recent sales" : `${r.stock_days} days` }, { key: "avg_daily_qty", label: "Demand/Day", render: r => fmtKg(r.avg_daily_qty) }, { key: "profit", label: "Profit", render: r => fmt(r.profit) }, { key: "priority", label: "Priority", render: r => <Badge status={r.priority === 'URGENT' ? 'Overdue' : r.priority === 'HIGH' ? 'Due Today' : 'Upcoming'} /> }, { key: "suggested_qty", label: "Suggested Buy", render: r => fmtKg(r.suggested_qty) }]} rows={purchase} /></Panel>
     </>}
   </div>;
 }
@@ -2700,25 +2746,25 @@ function ReportsPage({ data }) {
 
 function WhatsAppPage({ bills, setBills, business, refresh }) {
   const language = useLanguage();
-  const [search,setSearch]=useState(""),[statusFilter,setStatusFilter]=useState(""),[typeFilter,setTypeFilter]=useState(""),[from,setFrom]=useState(""),[to,setTo]=useState("");
-  const filtered=useMemo(()=>bills.filter(b=>textMatch(b,["customer","phone","kind","status","message"],search)&&(!statusFilter||b.status===statusFilter)&&(!typeFilter||b.kind===typeFilter)&&dateMatch(b,from,to)),[bills,search,statusFilter,typeFilter,from,to]);
-  const clear=()=>{setSearch("");setStatusFilter("");setTypeFilter("");setFrom("");setTo("");};
-  const messageFor = b => `Hello ${b.customer}, your outstanding amount with ${business?.name||"SabziSetu"} is ${fmt(b.amount)}. Please make the payment at your earliest convenience. Thank you.`;
-  const send=async(id)=>{const bill=bills.find(b=>b.id===id); if(!bill||bill.kind==="Payment")return; if(openWhatsApp(bill.phone,messageFor(bill))){try{await api.update("whatsapp-bills",id,{status:"Opened"}); await refresh();}catch(err){appAlert("Couldn't save on the server — reload to resync.\n"+err.message)}}};
-  const sendAll=async()=>{
-    const pending=filtered.filter(b=>b.kind!=="Payment" && b.status==="Not sent" && waPhone(b.phone));
-    if(!pending.length){appAlert(language==="hi"?"भेजने के लिए कोई लंबित बिल नहीं है।":"There are no pending bills with valid mobile numbers to open.");return;}
-    const confirmed=await appConfirm(language==="hi"?`${pending.length} ग्राहकों के लिए व्हाट्सऐप संदेश खोलें?\n\nप्रत्येक संदेश व्हाट्सऐप में पहले से भरा हुआ खुलेगा। संदेश अपने-आप नहीं भेजा जाएगा।`:`Open WhatsApp messages for ${pending.length} customers?\n\nEach message will open pre-filled in WhatsApp. Messages are not sent automatically.`);
-    if(!confirmed)return;
-    for(const b of pending){
-      if(openWhatsApp(b.phone,messageFor(b))){
-        try{await api.update("whatsapp-bills",b.id,{status:"Opened"}); await refresh()}catch(err){console.error(err)}
+  const [search, setSearch] = useState(""), [statusFilter, setStatusFilter] = useState(""), [typeFilter, setTypeFilter] = useState(""), [from, setFrom] = useState(""), [to, setTo] = useState("");
+  const filtered = useMemo(() => bills.filter(b => textMatch(b, ["customer", "phone", "kind", "status", "message"], search) && (!statusFilter || b.status === statusFilter) && (!typeFilter || b.kind === typeFilter) && dateMatch(b, from, to)), [bills, search, statusFilter, typeFilter, from, to]);
+  const clear = () => { setSearch(""); setStatusFilter(""); setTypeFilter(""); setFrom(""); setTo(""); };
+  const messageFor = b => `Hello ${b.customer}, your outstanding amount with ${business?.name || "SabziSetu"} is ${fmt(b.amount)}. Please make the payment at your earliest convenience. Thank you.`;
+  const send = async (id) => { const bill = bills.find(b => b.id === id); if (!bill || bill.kind === "Payment") return; if (openWhatsApp(bill.phone, messageFor(bill))) { try { await api.update("whatsapp-bills", id, { status: "Opened" }); await refresh(); } catch (err) { appAlert("Couldn't save on the server — reload to resync.\n" + err.message) } } };
+  const sendAll = async () => {
+    const pending = filtered.filter(b => b.kind !== "Payment" && b.status === "Not sent" && waPhone(b.phone));
+    if (!pending.length) { appAlert(language === "hi" ? "भेजने के लिए कोई लंबित बिल नहीं है।" : "There are no pending bills with valid mobile numbers to open."); return; }
+    const confirmed = await appConfirm(language === "hi" ? `${pending.length} ग्राहकों के लिए व्हाट्सऐप संदेश खोलें?\n\nप्रत्येक संदेश व्हाट्सऐप में पहले से भरा हुआ खुलेगा। संदेश अपने-आप नहीं भेजा जाएगा।` : `Open WhatsApp messages for ${pending.length} customers?\n\nEach message will open pre-filled in WhatsApp. Messages are not sent automatically.`);
+    if (!confirmed) return;
+    for (const b of pending) {
+      if (openWhatsApp(b.phone, messageFor(b))) {
+        try { await api.update("whatsapp-bills", b.id, { status: "Opened" }); await refresh() } catch (err) { console.error(err) }
       }
-      await new Promise(r=>setTimeout(r,450));
+      await new Promise(r => setTimeout(r, 450));
     }
   };
-  const openedCount=filtered.filter(b=>b.status==="Opened").length;
-  return <div className="space-y-5"><div className="flex flex-wrap gap-4"><StatCard icon={MessageCircle} color="green" label="WhatsApp Opened" value={openedCount}/><StatCard icon={MessageCircle} color="orange" label="Pending" value={filtered.filter(b=>b.status==="Not sent").length}/></div><Panel title="WhatsApp Bills" action={<Btn variant="outline" onClick={sendAll}><Send size={14}/> Open All Pending</Btn>}><FilterBar search={search} setSearch={setSearch} placeholder="Search customer or mobile…" onClear={clear}><select className={inputCls+" !w-auto bg-white"} value={typeFilter} onChange={e=>setTypeFilter(e.target.value)}><option value="">All Types</option><option value="Bill">Bill</option><option value="Reminder">Reminder</option><option value="Payment">Payment</option></select><select className={inputCls+" !w-auto bg-white"} value={statusFilter} onChange={e=>setStatusFilter(e.target.value)}><option value="">All Statuses</option><option>Not sent</option><option>Opened</option><option>Recorded</option></select><DateFilters from={from} setFrom={setFrom} to={to} setTo={setTo}/></FilterBar><DataTable columns={[{key:"customer",label:"Customer"},{key:"phone",label:"Phone",render:r=><span className="flex items-center gap-1 text-gray-500"><Phone size={13}/> {r.phone||"—"}</span>},{key:"date",label:"Date"},{key:"kind",label:"Type",render:r=><Badge status={r.kind||"Bill"}/>},{key:"amount",label:"Amount",render:r=><span className="font-medium text-gray-800">{fmt(r.amount)}</span>},{key:"payment_method",label:"Method",render:r=>r.kind==="Payment"?(r.payment_method||"—"):<span className="text-xs text-gray-400">—</span>},{key:"payment_proof",label:"Proof",render:r=>r.kind==="Payment"&&r.payment_proof?<a href={r.payment_proof} target="_blank" rel="noopener noreferrer" className="text-xs text-green-700 hover:underline">View</a>:<span className="text-xs text-gray-400">—</span>},{key:"status",label:"Status",render:r=><Badge status={r.status}/>} ,{key:"action",label:"",render:r=>r.kind==="Payment"?<span className="text-xs text-gray-400">Payment recorded</span>:r.status==="Not sent"?<Btn variant="ghost" onClick={()=>send(r.id)}><Send size={13}/> Open WhatsApp</Btn>:<span className="text-xs text-gray-400">Opened</span>}]} rows={filtered}/></Panel></div>;
+  const openedCount = filtered.filter(b => b.status === "Opened").length;
+  return <div className="space-y-5"><div className="flex flex-wrap gap-4"><StatCard icon={MessageCircle} color="green" label="WhatsApp Opened" value={openedCount} /><StatCard icon={MessageCircle} color="orange" label="Pending" value={filtered.filter(b => b.status === "Not sent").length} /></div><Panel title="WhatsApp Bills" action={<Btn variant="outline" onClick={sendAll}><Send size={14} /> Open All Pending</Btn>}><FilterBar search={search} setSearch={setSearch} placeholder="Search customer or mobile…" onClear={clear}><select className={inputCls + " !w-auto bg-white"} value={typeFilter} onChange={e => setTypeFilter(e.target.value)}><option value="">All Types</option><option value="Bill">Bill</option><option value="Reminder">Reminder</option><option value="Payment">Payment</option></select><select className={inputCls + " !w-auto bg-white"} value={statusFilter} onChange={e => setStatusFilter(e.target.value)}><option value="">All Statuses</option><option>Not sent</option><option>Opened</option><option>Recorded</option></select><DateFilters from={from} setFrom={setFrom} to={to} setTo={setTo} /></FilterBar><DataTable columns={[{ key: "customer", label: "Customer" }, { key: "phone", label: "Phone", render: r => <span className="flex items-center gap-1 text-gray-500"><Phone size={13} /> {r.phone || "—"}</span> }, { key: "date", label: "Date" }, { key: "kind", label: "Type", render: r => <Badge status={r.kind || "Bill"} /> }, { key: "amount", label: "Amount", render: r => <span className="font-medium text-gray-800">{fmt(r.amount)}</span> }, { key: "payment_method", label: "Method", render: r => r.kind === "Payment" ? (r.payment_method || "—") : <span className="text-xs text-gray-400">—</span> }, { key: "payment_proof", label: "Proof", render: r => r.kind === "Payment" && r.payment_proof ? <a href={r.payment_proof} target="_blank" rel="noopener noreferrer" className="text-xs text-green-700 hover:underline">View</a> : <span className="text-xs text-gray-400">—</span> }, { key: "status", label: "Status", render: r => <Badge status={r.status} /> }, { key: "action", label: "", render: r => r.kind === "Payment" ? <span className="text-xs text-gray-400">Payment recorded</span> : r.status === "Not sent" ? <Btn variant="ghost" onClick={() => send(r.id)}><Send size={13} /> Open WhatsApp</Btn> : <span className="text-xs text-gray-400">Opened</span> }]} rows={filtered} /></Panel></div>;
 }
 
 /* ---------------------------------------------------------------
@@ -2727,13 +2773,13 @@ function WhatsAppPage({ bills, setBills, business, refresh }) {
 
 function NotificationsPage({ notifications, setNotifications, data, refresh }) {
   const language = useLanguage();
-  const [search,setSearch]=useState(""),[readFilter,setReadFilter]=useState(""),[typeFilter,setTypeFilter]=useState("");
-  const types=[...new Set(notifications.map(n=>n.action_type).filter(Boolean))].sort();
-  const filtered=useMemo(()=>notifications.filter(n=>textMatch(n,["text","action_type","action_value"],search)&&(!readFilter||(readFilter==="Unread"?!n.read:n.read))&&(!typeFilter||n.action_type===typeFilter)),[notifications,search,readFilter,typeFilter]);
-  const clear=()=>{setSearch("");setReadFilter("");setTypeFilter("");};
-  const markRead=async id=>{const previous=notifications;setNotifications(notifications.map(n=>n.id===id?{...n,read:true}:n));try{await api.update("notifications",id,{read:true})}catch(err){setNotifications(previous);appAlert(err.message)}}
-  const markAll=async()=>{const previous=notifications;setNotifications(notifications.map(n=>({...n,read:true})));try{await api.markAllNotificationsRead()}catch(err){setNotifications(previous);appAlert(err.message)}}
-  return <div className="space-y-5"><Panel title={language === "hi" ? "सूचनाएं" : "Notifications"} action={<Btn variant="outline" onClick={markAll}>{language === "hi" ? "सभी को पढ़ा हुआ करें" : "Mark all as read"}</Btn>}><FilterBar search={search} setSearch={setSearch} placeholder={language === "hi" ? "सूचनाएं खोजें…" : "Search notifications…"} onClear={clear}><select className={inputCls+" !w-auto bg-white"} value={readFilter} onChange={e=>setReadFilter(e.target.value)}><option value="">{language === "hi" ? "सभी" : "All"}</option><option value="Unread">{language === "hi" ? "अपठित" : "Unread"}</option><option value="Read">{language === "hi" ? "पढ़ी हुई" : "Read"}</option></select>{types.length>0&&<select className={inputCls+" !w-auto bg-white"} value={typeFilter} onChange={e=>setTypeFilter(e.target.value)}><option value="">{language === "hi" ? "सभी प्रकार" : "All Types"}</option>{types.map(t=><option key={t} value={t}>{t}</option>)}</select>}</FilterBar><ul className="divide-y divide-gray-50">{filtered.map(n=><li key={n.id} className={`py-3 flex items-start gap-3 ${!n.read?"bg-green-50/40 -mx-2 px-2 rounded-lg":""}`}><span className={`mt-1.5 w-2 h-2 rounded-full shrink-0 ${!n.read?"bg-green-600":"bg-transparent"}`}/><div className="flex-1"><p className="text-sm text-gray-700">{translateNotification(n, language, data.masters)}</p><div className="flex items-center gap-2 mt-1"><p className="text-xs text-gray-400">{translateUiString(n.time, language)}</p>{n.action_type==="whatsapp"&&n.action_value&&<a href={whatsappUrl(n.action_value,n.action_message||`${n.text} Please make the payment at your earliest convenience. Thank you.`)} target="_blank" rel="noopener noreferrer" onClick={()=>{const message=n.action_message||`${n.text} Please make the payment at your earliest convenience. Thank you.`; const customerText=String(n.text||"").replace(/ has an overdue payment.*$/,"" ).replace(/ has a payment.*$/,"" ); const m=String(message).match(/₹([\d,]+(?:\.\d+)?)/); void markRead(n.id); api.logWhatsAppReminder({customer:customerText,phone:n.action_value,amount:Number((m?.[1]||"0").replace(/,/g,"")),message}).then(()=>refresh()).catch(err=>console.error("Failed to update WhatsApp Bills:",err));}} className="text-xs text-green-700 font-medium hover:underline">{language === "hi" ? "व्हाट्सऐप रिमाइंडर भेजें" : "Send WhatsApp reminder"}</a>}</div></div>{!n.read&&<button onClick={()=>markRead(n.id)} className="text-xs text-green-700 hover:underline">{language === "hi" ? "पढ़ा हुआ करें" : "Mark read"}</button>}</li>)}{filtered.length===0&&<li className="text-center text-gray-400 text-sm py-8">{language === "hi" ? "आपके फ़िल्टर से कोई सूचना मेल नहीं खाती।" : "No notifications match your filters."}</li>}</ul></Panel></div>;
+  const [search, setSearch] = useState(""), [readFilter, setReadFilter] = useState(""), [typeFilter, setTypeFilter] = useState("");
+  const types = [...new Set(notifications.map(n => n.action_type).filter(Boolean))].sort();
+  const filtered = useMemo(() => notifications.filter(n => textMatch(n, ["text", "action_type", "action_value"], search) && (!readFilter || (readFilter === "Unread" ? !n.read : n.read)) && (!typeFilter || n.action_type === typeFilter)), [notifications, search, readFilter, typeFilter]);
+  const clear = () => { setSearch(""); setReadFilter(""); setTypeFilter(""); };
+  const markRead = async id => { const previous = notifications; setNotifications(notifications.map(n => n.id === id ? { ...n, read: true } : n)); try { await api.update("notifications", id, { read: true }) } catch (err) { setNotifications(previous); appAlert(err.message) } }
+  const markAll = async () => { const previous = notifications; setNotifications(notifications.map(n => ({ ...n, read: true }))); try { await api.markAllNotificationsRead() } catch (err) { setNotifications(previous); appAlert(err.message) } }
+  return <div className="space-y-5"><Panel title={language === "hi" ? "सूचनाएं" : "Notifications"} action={<Btn variant="outline" onClick={markAll}>{language === "hi" ? "सभी को पढ़ा हुआ करें" : "Mark all as read"}</Btn>}><FilterBar search={search} setSearch={setSearch} placeholder={language === "hi" ? "सूचनाएं खोजें…" : "Search notifications…"} onClear={clear}><select className={inputCls + " !w-auto bg-white"} value={readFilter} onChange={e => setReadFilter(e.target.value)}><option value="">{language === "hi" ? "सभी" : "All"}</option><option value="Unread">{language === "hi" ? "अपठित" : "Unread"}</option><option value="Read">{language === "hi" ? "पढ़ी हुई" : "Read"}</option></select>{types.length > 0 && <select className={inputCls + " !w-auto bg-white"} value={typeFilter} onChange={e => setTypeFilter(e.target.value)}><option value="">{language === "hi" ? "सभी प्रकार" : "All Types"}</option>{types.map(t => <option key={t} value={t}>{t}</option>)}</select>}</FilterBar><ul className="divide-y divide-gray-50">{filtered.map(n => <li key={n.id} className={`py-3 flex items-start gap-3 ${!n.read ? "bg-green-50/40 -mx-2 px-2 rounded-lg" : ""}`}><span className={`mt-1.5 w-2 h-2 rounded-full shrink-0 ${!n.read ? "bg-green-600" : "bg-transparent"}`} /><div className="flex-1"><p className="text-sm text-gray-700">{translateNotification(n, language, data.masters)}</p><div className="flex items-center gap-2 mt-1"><p className="text-xs text-gray-400">{translateUiString(n.time, language)}</p>{n.action_type === "whatsapp" && n.action_value && <a href={whatsappUrl(n.action_value, n.action_message || `${n.text} Please make the payment at your earliest convenience. Thank you.`)} target="_blank" rel="noopener noreferrer" onClick={() => { const message = n.action_message || `${n.text} Please make the payment at your earliest convenience. Thank you.`; const customerText = String(n.text || "").replace(/ has an overdue payment.*$/, "").replace(/ has a payment.*$/, ""); const m = String(message).match(/₹([\d,]+(?:\.\d+)?)/); void markRead(n.id); api.logWhatsAppReminder({ customer: customerText, phone: n.action_value, amount: Number((m?.[1] || "0").replace(/,/g, "")), message }).then(() => refresh()).catch(err => console.error("Failed to update WhatsApp Bills:", err)); }} className="text-xs text-green-700 font-medium hover:underline">{language === "hi" ? "व्हाट्सऐप रिमाइंडर भेजें" : "Send WhatsApp reminder"}</a>}</div></div>{!n.read && <button onClick={() => markRead(n.id)} className="text-xs text-green-700 hover:underline">{language === "hi" ? "पढ़ा हुआ करें" : "Mark read"}</button>}</li>)}{filtered.length === 0 && <li className="text-center text-gray-400 text-sm py-8">{language === "hi" ? "आपके फ़िल्टर से कोई सूचना मेल नहीं खाती।" : "No notifications match your filters."}</li>}</ul></Panel></div>;
 }
 
 /* ---------------------------------------------------------------
@@ -2741,6 +2787,9 @@ function NotificationsPage({ notifications, setNotifications, data, refresh }) {
 --------------------------------------------------------------- */
 
 function SettingsPage({ business, setBusiness, masters, refreshMasters, stock = [], mandiPurchases = [], localPurchases = [], sales = [] }) {
+  const [themeColor, setThemeColor] = useState(
+    business?.themeColor || business?.theme_color || "#047857"
+  );
   const [form, setForm] = useState(business);
   const [saved, setSaved] = useState(false);
   const [waSendAllEnabled, setWaSendAllEnabled] = useState(readWaSendAll(business));
@@ -2749,12 +2798,28 @@ function SettingsPage({ business, setBusiness, masters, refreshMasters, stock = 
   const [passwordForm, setPasswordForm] = useState({ current: "", next: "", confirm: "" });
   const [passwordBusy, setPasswordBusy] = useState(false);
   const [passwordShow, setPasswordShow] = useState({ current: false, next: false, confirm: false });
-  useEffect(()=>{setForm(business);setWaSendAllEnabled(readWaSendAll(business));setLowStockThreshold(Number(business?.low_stock_threshold_kg ?? 50))},[business]);
-  const [item, setItem] = useState({nameEn:"",nameHi:"",specifications:""});
-  const [unit, setUnit] = useState({name:"",symbol:"",kgMultiplier:""});
-  const [vendor, setVendor] = useState({name:"",type:"Both"});
+  useEffect(() => {
+    setForm(business);
+    setWaSendAllEnabled(readWaSendAll(business));
+    setLowStockThreshold(Number(business?.low_stock_threshold_kg ?? 50));
+    setThemeColor(
+      business?.themeColor || business?.theme_color || "#047857"
+    );
+  }, [business]);
+  const [item, setItem] = useState({ nameEn: "", nameHi: "", specifications: "" });
+  const [unit, setUnit] = useState({ name: "", symbol: "", kgMultiplier: "" });
+  const [vendor, setVendor] = useState({ name: "", type: "Both" });
   const [expenseCat, setExpenseCat] = useState("");
-  const save = async () => { try { const updated=await api.saveSettings({...form, whatsappSendAllEnabled: waSendAllEnabled, lowStockThresholdKg: Number(lowStockThreshold)}); setBusiness(updated); setForm(updated); setWaSendAllEnabled(readWaSendAll(updated)); setSaved(true); setTimeout(()=>setSaved(false),2000); } catch(err){appAlert("Couldn't save settings.\n"+err.message)} };
+  const save = async () => {
+    try {
+      const updated = await api.saveSettings({
+        ...form,
+        themeColor,
+        whatsappSendAllEnabled: waSendAllEnabled,
+        lowStockThresholdKg: Number(lowStockThreshold)
+      }); setBusiness(updated); setForm(updated); setWaSendAllEnabled(readWaSendAll(updated)); setSaved(true); setTimeout(() => setSaved(false), 2000);
+    } catch (err) { appAlert("Couldn't save settings.\n" + err.message) }
+  };
   const changeAdminPassword = async (e) => {
     e.preventDefault();
     const { current, next, confirm } = passwordForm;
@@ -2791,11 +2856,11 @@ function SettingsPage({ business, setBusiness, masters, refreshMasters, stock = 
       appAlert("Couldn't save WhatsApp Send to All setting.\n" + err.message);
     }
   };
-  const addItem=async()=>{if(!item.nameEn.trim())return;try{await api.createMaster("items",{nameEn:item.nameEn,nameHi:item.nameHi,specifications:item.specifications.split(",")});setItem({nameEn:"",nameHi:"",specifications:""});await refreshMasters()}catch(e){appAlert(e.message)}};
-  const addSpec=async(id)=>{const name=await appPrompt("Specification name (e.g. Langda Mango)");if(!name?.trim())return;try{await api.addItemSpecification(id,{name:name.trim()});await refreshMasters()}catch(e){appAlert(e.message)}};
-  const addUnit=async()=>{if(!unit.name||!unit.symbol||!unit.kgMultiplier)return;try{await api.createMaster("units",{...unit,kgMultiplier:Number(unit.kgMultiplier)});setUnit({name:"",symbol:"",kgMultiplier:""});await refreshMasters()}catch(e){appAlert(e.message)}};
-  const addVendor=async()=>{if(!vendor.name)return;try{await api.createMaster("vendors",vendor);setVendor({name:"",type:"Both"});await refreshMasters()}catch(e){appAlert(e.message)}};
-  const addExpense=async()=>{if(!expenseCat.trim())return;try{await api.createMaster("expense-categories",{name:expenseCat});setExpenseCat("");await refreshMasters()}catch(e){appAlert(e.message)}};
+  const addItem = async () => { if (!item.nameEn.trim()) return; try { await api.createMaster("items", { nameEn: item.nameEn, nameHi: item.nameHi, specifications: item.specifications.split(",") }); setItem({ nameEn: "", nameHi: "", specifications: "" }); await refreshMasters() } catch (e) { appAlert(e.message) } };
+  const addSpec = async (id) => { const name = await appPrompt("Specification name (e.g. Langda Mango)"); if (!name?.trim()) return; try { await api.addItemSpecification(id, { name: name.trim() }); await refreshMasters() } catch (e) { appAlert(e.message) } };
+  const addUnit = async () => { if (!unit.name || !unit.symbol || !unit.kgMultiplier) return; try { await api.createMaster("units", { ...unit, kgMultiplier: Number(unit.kgMultiplier) }); setUnit({ name: "", symbol: "", kgMultiplier: "" }); await refreshMasters() } catch (e) { appAlert(e.message) } };
+  const addVendor = async () => { if (!vendor.name) return; try { await api.createMaster("vendors", vendor); setVendor({ name: "", type: "Both" }); await refreshMasters() } catch (e) { appAlert(e.message) } };
+  const addExpense = async () => { if (!expenseCat.trim()) return; try { await api.createMaster("expense-categories", { name: expenseCat }); setExpenseCat(""); await refreshMasters() } catch (e) { appAlert(e.message) } };
   const masterItems = useMemo(() => (masters?.items || []), [masters]);
   const deactivateItem = async (id, name) => {
     if (!await appConfirm(`Deactivate "${name}"? It will no longer be allowed in new purchase/sales/stock entries. Historical records will remain safe.`)) return;
@@ -2812,44 +2877,63 @@ function SettingsPage({ business, setBusiness, masters, refreshMasters, stock = 
     catch (e) { appAlert(e.message); }
   };
   return <div className="space-y-5">
-    <Panel title="Business Profile"><div className="grid grid-cols-1 md:grid-cols-2 gap-3"><Field label="Business Name"><input className={inputCls} value={form.name||""} onChange={e=>setForm({...form,name:e.target.value})}/></Field><Field label="Owner Name"><input className={inputCls} value={form.owner||""} onChange={e=>setForm({...form,owner:e.target.value})}/></Field><Field label="Tagline"><input className={inputCls} value={form.tagline||""} onChange={e=>setForm({...form,tagline:e.target.value})}/></Field><Field label="Currency Symbol"><input className={inputCls} value={form.currency||"₹"} onChange={e=>setForm({...form,currency:e.target.value})}/></Field></div><Btn onClick={save}><Check size={15}/> Save Business</Btn>{saved&&<span className="ml-3 text-sm text-green-600">Saved.</span>}</Panel>
+    <Panel title="Business Profile"><div className="grid grid-cols-1 md:grid-cols-2 gap-3"><Field label="Business Name"><input className={inputCls} value={form.name || ""} onChange={e => setForm({ ...form, name: e.target.value })} /></Field><Field label="Owner Name"><input className={inputCls} value={form.owner || ""} onChange={e => setForm({ ...form, owner: e.target.value })} /></Field><Field label="Tagline"><input className={inputCls} value={form.tagline || ""} onChange={e => setForm({ ...form, tagline: e.target.value })} /></Field><Field label="Currency Symbol"><input className={inputCls} value={form.currency || "₹"} onChange={e => setForm({ ...form, currency: e.target.value })} /></Field><Field label="Theme Color">
+      <div className="flex items-center gap-2">
+        <input
+          type="color"
+          value={themeColor}
+          onChange={e => setThemeColor(e.target.value.toUpperCase())}
+          className="h-10 w-14 cursor-pointer rounded-lg border border-gray-200 bg-white p-1"
+          title="Choose theme color"
+        />
+
+        <input
+          type="text"
+          value={themeColor}
+          onChange={e => setThemeColor(e.target.value.toUpperCase())}
+          className={inputCls}
+          placeholder="#047857"
+          maxLength={7}
+        />
+      </div>
+    </Field></div><Btn onClick={save}><Check size={15} /> Save Business</Btn>{saved && <span className="ml-3 text-sm text-green-600">Saved.</span>}</Panel>
     <Panel title="Admin Controls" className="space-y-4">
       <div className="flex items-center justify-between gap-4 rounded-xl border border-gray-100 bg-gray-50 p-4">
         <div><h4 className="font-semibold text-gray-800">WhatsApp “Send to All”</h4><p className="text-xs text-gray-500 mt-1">Turn this option on or off. When off, the Send to All button is removed from Payments & Due.</p></div>
-        <button type="button" onClick={toggleWhatsAppSendAll} className={`relative inline-flex h-7 w-12 shrink-0 rounded-full transition ${waSendAllEnabled?"bg-emerald-600":"bg-gray-300"}`} aria-label="Toggle WhatsApp Send to All">
-          <span className={`inline-block h-5 w-5 transform rounded-full bg-white shadow mt-1 transition ${waSendAllEnabled?"translate-x-6":"translate-x-1"}`}/>
+        <button type="button" onClick={toggleWhatsAppSendAll} className={`relative inline-flex h-7 w-12 shrink-0 rounded-full transition ${waSendAllEnabled ? "bg-emerald-600" : "bg-gray-300"}`} aria-label="Toggle WhatsApp Send to All">
+          <span className={`inline-block h-5 w-5 transform rounded-full bg-white shadow mt-1 transition ${waSendAllEnabled ? "translate-x-6" : "translate-x-1"}`} />
         </button>
       </div>
       <div className="flex items-center justify-between gap-4 rounded-xl border border-gray-100 bg-white p-4">
         <div className="min-w-0"><h4 className="font-semibold text-gray-800">Change Admin Password</h4><p className="text-xs text-gray-500 mt-1">Verify your current password, then create a new password for this admin account.</p></div>
-        <Btn variant="outline" onClick={() => setPasswordModalOpen(true)}><LockKeyhole size={14}/> Change Password</Btn>
+        <Btn variant="outline" onClick={() => setPasswordModalOpen(true)}><LockKeyhole size={14} /> Change Password</Btn>
       </div>
       <p className="text-xs text-amber-600">Note: the current WhatsApp link method opens each customer's pre-filled message. Automatic bulk sending will require the official WhatsApp Cloud API later.</p>
     </Panel>
-    {passwordModalOpen && <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4" onMouseDown={e=>{if(e.target===e.currentTarget&&!passwordBusy)setPasswordModalOpen(false)}}>
+    {passwordModalOpen && <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4" onMouseDown={e => { if (e.target === e.currentTarget && !passwordBusy) setPasswordModalOpen(false) }}>
       <div className="w-full max-w-md rounded-2xl bg-white shadow-2xl border border-gray-100 overflow-hidden">
         <div className="flex items-start justify-between gap-4 px-6 py-5 border-b border-gray-100">
-          <div><div className="flex items-center gap-2 text-emerald-800"><LockKeyhole size={18}/><h3 className="text-lg font-bold text-gray-900">Change Password</h3></div><p className="text-xs text-gray-500 mt-1">Your current password is required for security.</p></div>
-          <button type="button" disabled={passwordBusy} onClick={()=>setPasswordModalOpen(false)} className="p-2 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-700"><X size={18}/></button>
+          <div><div className="flex items-center gap-2 text-emerald-800"><LockKeyhole size={18} /><h3 className="text-lg font-bold text-gray-900">Change Password</h3></div><p className="text-xs text-gray-500 mt-1">Your current password is required for security.</p></div>
+          <button type="button" disabled={passwordBusy} onClick={() => setPasswordModalOpen(false)} className="p-2 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-700"><X size={18} /></button>
         </div>
         <form onSubmit={changeAdminPassword} className="p-6 space-y-4">
-          {[['current','Current password','current-password'],['next','New password','new-password'],['confirm','Confirm new password','new-password']].map(([key,label,autoComplete])=><div key={key}>
+          {[['current', 'Current password', 'current-password'], ['next', 'New password', 'new-password'], ['confirm', 'Confirm new password', 'new-password']].map(([key, label, autoComplete]) => <div key={key}>
             <label className="block text-sm font-medium text-gray-700 mb-2">{label}</label>
-            <div className="relative"><input type={passwordShow[key]?'text':'password'} autoComplete={autoComplete} value={passwordForm[key]} onChange={e=>setPasswordForm(prev=>({...prev,[key]:e.target.value}))} className={`${inputCls} pr-11 h-11 rounded-xl`} placeholder={key==='current'?'Enter current password':key==='next'?'Enter new password':'Re-enter new password'} />
-              <button type="button" onClick={()=>togglePasswordVisibility(key)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700">{passwordShow[key]?<EyeOff size={16}/>:<Eye size={16}/>}</button>
+            <div className="relative"><input type={passwordShow[key] ? 'text' : 'password'} autoComplete={autoComplete} value={passwordForm[key]} onChange={e => setPasswordForm(prev => ({ ...prev, [key]: e.target.value }))} className={`${inputCls} pr-11 h-11 rounded-xl`} placeholder={key === 'current' ? 'Enter current password' : key === 'next' ? 'Enter new password' : 'Re-enter new password'} />
+              <button type="button" onClick={() => togglePasswordVisibility(key)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700">{passwordShow[key] ? <EyeOff size={16} /> : <Eye size={16} />}</button>
             </div>
           </div>)}
           <div className="rounded-xl bg-emerald-50 border border-emerald-100 px-4 py-3 text-xs text-emerald-800">Use at least 8 characters. After changing it, other active sessions for this admin account will be signed out.</div>
-          <div className="flex justify-end gap-2 pt-2"><Btn type="button" variant="outline" disabled={passwordBusy} onClick={()=>setPasswordModalOpen(false)}>Cancel</Btn><Btn type="submit" disabled={passwordBusy}>{passwordBusy?<RefreshCw size={14} className="animate-spin"/>:<Check size={14}/>} {passwordBusy?'Changing…':'Change Password'}</Btn></div>
+          <div className="flex justify-end gap-2 pt-2"><Btn type="button" variant="outline" disabled={passwordBusy} onClick={() => setPasswordModalOpen(false)}>Cancel</Btn><Btn type="submit" disabled={passwordBusy}>{passwordBusy ? <RefreshCw size={14} className="animate-spin" /> : <Check size={14} />} {passwordBusy ? 'Changing…' : 'Change Password'}</Btn></div>
         </form>
       </div>
     </div>}
     <Panel title="Master Settings" className="space-y-6">
-      <div><h4 className="font-semibold text-gray-800 mb-1">1. Vegetable / Item Master</h4><p className="text-xs text-gray-500 mb-3">Control English name, Hindi name and optional specifications. These names power suggestions everywhere.</p><div className="grid grid-cols-1 md:grid-cols-3 gap-2"><input className={inputCls} placeholder="English name" value={item.nameEn} onChange={e=>setItem({...item,nameEn:e.target.value})}/><input className={inputCls} placeholder="Hindi name" value={item.nameHi} onChange={e=>setItem({...item,nameHi:e.target.value})}/><input className={inputCls} placeholder="Specifications, comma separated" value={item.specifications} onChange={e=>setItem({...item,specifications:e.target.value})}/></div><Btn className="mt-2" onClick={addItem}><Plus size={14}/> Add / Update Item</Btn><div className="mt-4 divide-y border rounded-xl">{masterItems.map(i=><div key={i.id} className="p-3 flex items-center justify-between gap-3"><div><b className="text-sm">{i.nameEn}</b>{i.nameHi&&<span className="text-sm text-gray-400 ml-2">{i.nameHi}</span>}{i.active===false&&<span className="ml-2 text-[10px] px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">Inactive</span>}<div className="text-xs text-gray-400 mt-1">{i.specifications?.length?i.specifications.map(x=>x.name).join(" · "):"No specifications yet"}</div></div><div className="flex items-center gap-2"><Btn variant="outline" onClick={()=>addSpec(i.id)}>+ Specification</Btn>{i.active===false?<Btn variant="outline" onClick={()=>activateItem(i.id)}>Activate</Btn>:<Btn variant="outline" onClick={()=>deactivateItem(i.id,i.nameEn)}>Deactivate</Btn>}<button type="button" disabled={i.hasHistory} onClick={()=>deleteItem(i.id,i.nameEn)} className={`p-2 ${i.hasHistory ? "text-gray-200 cursor-not-allowed" : "text-gray-300 hover:text-red-600"}`} title={i.hasHistory ? "Cannot permanently delete an item with transaction history. Deactivate it instead." : "Permanently delete item"}><Trash2 size={16}/></button></div></div>)}</div></div>
-      <div><h4 className="font-semibold text-gray-800 mb-1">2. Quantity Unit Master</h4><p className="text-xs text-gray-500 mb-3">All stock is stored internally in Kg. This master controls conversion.</p><div className="grid grid-cols-1 md:grid-cols-3 gap-2"><input className={inputCls} placeholder="Unit name" value={unit.name} onChange={e=>setUnit({...unit,name:e.target.value})}/><input className={inputCls} placeholder="Symbol" value={unit.symbol} onChange={e=>setUnit({...unit,symbol:e.target.value})}/><input type="number" min="0" step="0.001" className={inputCls} placeholder="1 unit = ? Kg" value={unit.kgMultiplier} onChange={e=>setUnit({...unit,kgMultiplier:e.target.value})}/></div><Btn className="mt-2" onClick={addUnit}><Plus size={14}/> Add / Update Unit</Btn><div className="flex flex-wrap gap-2 mt-3">{(masters?.units||[]).map(u=><span key={u.id} className="px-3 py-2 bg-gray-50 border rounded-lg text-sm">1 {u.symbol} = {u.kgMultiplier} Kg</span>)}</div></div>
-      <div><h4 className="font-semibold text-gray-800 mb-1">3. Vendor / Supplier Master</h4><div className="flex flex-wrap gap-2"><input className={inputCls+" !w-64"} placeholder="Vendor / Mandi name" value={vendor.name} onChange={e=>setVendor({...vendor,name:e.target.value})}/><select className={inputCls+" !w-auto"} value={vendor.type} onChange={e=>setVendor({...vendor,type:e.target.value})}><option>Mandi</option><option>Local</option><option>Both</option></select><Btn onClick={addVendor}><Plus size={14}/> Add Vendor</Btn></div><div className="flex flex-wrap gap-2 mt-3">{(masters?.vendors||[]).map(v=><span key={v.id} className="px-3 py-2 bg-gray-50 border rounded-lg text-sm">{v.name} · {v.type}</span>)}</div></div>
-      <div><h4 className="font-semibold text-gray-800 mb-1">4. Expense Category Master</h4><div className="flex gap-2"><input className={inputCls+" !max-w-sm"} placeholder="e.g. Fuel" value={expenseCat} onChange={e=>setExpenseCat(e.target.value)}/><Btn onClick={addExpense}><Plus size={14}/> Add Category</Btn></div><div className="flex flex-wrap gap-2 mt-3">{(masters?.expenseCategories||[]).map(c=><span key={c.id} className="px-3 py-2 bg-gray-50 border rounded-lg text-sm">{c.name}</span>)}</div></div>
-      <div><h4 className="font-semibold text-gray-800 mb-1">5. Business Rules</h4><div className="max-w-md mb-3"><Field label="Low Stock Alert Threshold (Kg)"><input type="number" min="0" step="0.001" className={inputCls} value={lowStockThreshold} onChange={e=>setLowStockThreshold(e.target.value)} /><p className="text-xs text-gray-400 mt-1">Notifications alert when current stock is at or below this amount.</p></Field></div><p className="text-xs text-gray-500">Quantity conversion, item naming, vendor lists, expense categories and low-stock threshold are controlled above. Transaction totals remain database-driven; no hardcoded quantities or prices are used.</p></div>
+      <div><h4 className="font-semibold text-gray-800 mb-1">1. Vegetable / Item Master</h4><p className="text-xs text-gray-500 mb-3">Control English name, Hindi name and optional specifications. These names power suggestions everywhere.</p><div className="grid grid-cols-1 md:grid-cols-3 gap-2"><input className={inputCls} placeholder="English name" value={item.nameEn} onChange={e => setItem({ ...item, nameEn: e.target.value })} /><input className={inputCls} placeholder="Hindi name" value={item.nameHi} onChange={e => setItem({ ...item, nameHi: e.target.value })} /><input className={inputCls} placeholder="Specifications, comma separated" value={item.specifications} onChange={e => setItem({ ...item, specifications: e.target.value })} /></div><Btn className="mt-2" onClick={addItem}><Plus size={14} /> Add / Update Item</Btn><div className="mt-4 divide-y border rounded-xl">{masterItems.map(i => <div key={i.id} className="p-3 flex items-center justify-between gap-3"><div><b className="text-sm">{i.nameEn}</b>{i.nameHi && <span className="text-sm text-gray-400 ml-2">{i.nameHi}</span>}{i.active === false && <span className="ml-2 text-[10px] px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">Inactive</span>}<div className="text-xs text-gray-400 mt-1">{i.specifications?.length ? i.specifications.map(x => x.name).join(" · ") : "No specifications yet"}</div></div><div className="flex items-center gap-2"><Btn variant="outline" onClick={() => addSpec(i.id)}>+ Specification</Btn>{i.active === false ? <Btn variant="outline" onClick={() => activateItem(i.id)}>Activate</Btn> : <Btn variant="outline" onClick={() => deactivateItem(i.id, i.nameEn)}>Deactivate</Btn>}<button type="button" disabled={i.hasHistory} onClick={() => deleteItem(i.id, i.nameEn)} className={`p-2 ${i.hasHistory ? "text-gray-200 cursor-not-allowed" : "text-gray-300 hover:text-red-600"}`} title={i.hasHistory ? "Cannot permanently delete an item with transaction history. Deactivate it instead." : "Permanently delete item"}><Trash2 size={16} /></button></div></div>)}</div></div>
+      <div><h4 className="font-semibold text-gray-800 mb-1">2. Quantity Unit Master</h4><p className="text-xs text-gray-500 mb-3">All stock is stored internally in Kg. This master controls conversion.</p><div className="grid grid-cols-1 md:grid-cols-3 gap-2"><input className={inputCls} placeholder="Unit name" value={unit.name} onChange={e => setUnit({ ...unit, name: e.target.value })} /><input className={inputCls} placeholder="Symbol" value={unit.symbol} onChange={e => setUnit({ ...unit, symbol: e.target.value })} /><input type="number" min="0" step="0.001" className={inputCls} placeholder="1 unit = ? Kg" value={unit.kgMultiplier} onChange={e => setUnit({ ...unit, kgMultiplier: e.target.value })} /></div><Btn className="mt-2" onClick={addUnit}><Plus size={14} /> Add / Update Unit</Btn><div className="flex flex-wrap gap-2 mt-3">{(masters?.units || []).map(u => <span key={u.id} className="px-3 py-2 bg-gray-50 border rounded-lg text-sm">1 {u.symbol} = {u.kgMultiplier} Kg</span>)}</div></div>
+      <div><h4 className="font-semibold text-gray-800 mb-1">3. Vendor / Supplier Master</h4><div className="flex flex-wrap gap-2"><input className={inputCls + " !w-64"} placeholder="Vendor / Mandi name" value={vendor.name} onChange={e => setVendor({ ...vendor, name: e.target.value })} /><select className={inputCls + " !w-auto"} value={vendor.type} onChange={e => setVendor({ ...vendor, type: e.target.value })}><option>Mandi</option><option>Local</option><option>Both</option></select><Btn onClick={addVendor}><Plus size={14} /> Add Vendor</Btn></div><div className="flex flex-wrap gap-2 mt-3">{(masters?.vendors || []).map(v => <span key={v.id} className="px-3 py-2 bg-gray-50 border rounded-lg text-sm">{v.name} · {v.type}</span>)}</div></div>
+      <div><h4 className="font-semibold text-gray-800 mb-1">4. Expense Category Master</h4><div className="flex gap-2"><input className={inputCls + " !max-w-sm"} placeholder="e.g. Fuel" value={expenseCat} onChange={e => setExpenseCat(e.target.value)} /><Btn onClick={addExpense}><Plus size={14} /> Add Category</Btn></div><div className="flex flex-wrap gap-2 mt-3">{(masters?.expenseCategories || []).map(c => <span key={c.id} className="px-3 py-2 bg-gray-50 border rounded-lg text-sm">{c.name}</span>)}</div></div>
+      <div><h4 className="font-semibold text-gray-800 mb-1">5. Business Rules</h4><div className="max-w-md mb-3"><Field label="Low Stock Alert Threshold (Kg)"><input type="number" min="0" step="0.001" className={inputCls} value={lowStockThreshold} onChange={e => setLowStockThreshold(e.target.value)} /><p className="text-xs text-gray-400 mt-1">Notifications alert when current stock is at or below this amount.</p></Field></div><p className="text-xs text-gray-500">Quantity conversion, item naming, vendor lists, expense categories and low-stock threshold are controlled above. Transaction totals remain database-driven; no hardcoded quantities or prices are used.</p></div>
     </Panel>
   </div>;
 }
@@ -2940,17 +3024,17 @@ function LoginPage({ onLogin }) {
           <div className="absolute -right-24 -top-24 w-72 h-72 rounded-full bg-emerald-800/60" />
           <div className="absolute -left-28 -bottom-28 w-80 h-80 rounded-full bg-green-700/30" />
           <div className="relative">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-700 flex items-center justify-center shadow-lg mb-7"><ShoppingBasket size={24}/></div>
+            <div className="w-12 h-12 rounded-2xl bg-emerald-700 flex items-center justify-center shadow-lg mb-7"><ShoppingBasket size={24} /></div>
             <p className="text-xs uppercase tracking-[.2em] text-emerald-300 font-semibold mb-3">SabziSetu Admin</p>
-            <h1 className="text-4xl xl:text-5xl font-bold leading-tight tracking-tight">Run your trading<br/>business with clarity.</h1>
+            <h1 className="text-4xl xl:text-5xl font-bold leading-tight tracking-tight">Run your trading<br />business with clarity.</h1>
             <p className="mt-5 max-w-md text-emerald-200 leading-7">A clean command centre for purchases, inventory, sales, payments, customers and daily operations.</p>
           </div>
-          <div className="relative flex items-center gap-3 text-sm text-emerald-300"><span className="w-2 h-2 rounded-full bg-green-400"/> Secure admin access <span className="text-emerald-700">•</span> India time</div>
+          <div className="relative flex items-center gap-3 text-sm text-emerald-300"><span className="w-2 h-2 rounded-full bg-green-400" /> Secure admin access <span className="text-emerald-700">•</span> India time</div>
         </div>
 
         <div className="p-7 sm:p-10 xl:p-14 flex flex-col justify-center">
           <div className="lg:hidden flex items-center gap-3 mb-9">
-            <div className="w-11 h-11 rounded-2xl bg-emerald-800 text-white flex items-center justify-center"><ShoppingBasket size={21}/></div>
+            <div className="w-11 h-11 rounded-2xl bg-emerald-800 text-white flex items-center justify-center"><ShoppingBasket size={21} /></div>
             <div><p className="font-bold text-gray-900 text-lg">SabziSetu</p><p className="text-xs text-gray-500">Admin Portal</p></div>
           </div>
           <div className="mb-8">
@@ -2961,15 +3045,15 @@ function LoginPage({ onLogin }) {
           <form onSubmit={submit} className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Username</label>
-              <div className="relative"><span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"><Users size={17}/></span><input autoFocus autoComplete="username" value={username} onChange={e=>setUsername(e.target.value)} className={`${inputCls} pl-10 h-12 rounded-xl`} placeholder="Admin username"/></div>
+              <div className="relative"><span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"><Users size={17} /></span><input autoFocus autoComplete="username" value={username} onChange={e => setUsername(e.target.value)} className={`${inputCls} pl-10 h-12 rounded-xl`} placeholder="Admin username" /></div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
-              <div className="relative"><span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"><LockKeyhole size={17}/></span><input type={showPassword ? "text" : "password"} autoComplete="current-password" value={password} onChange={e=>setPassword(e.target.value)} className={`${inputCls} pl-10 pr-11 h-12 rounded-xl`} placeholder="Your password"/><button type="button" onClick={()=>setShowPassword(v=>!v)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700">{showPassword ? <EyeOff size={17}/> : <Eye size={17}/>}</button></div>
+              <div className="relative"><span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"><LockKeyhole size={17} /></span><input type={showPassword ? "text" : "password"} autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} className={`${inputCls} pl-10 pr-11 h-12 rounded-xl`} placeholder="Your password" /><button type="button" onClick={() => setShowPassword(v => !v)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700">{showPassword ? <EyeOff size={17} /> : <Eye size={17} />}</button></div>
             </div>
             {error && <div className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
             <button disabled={busy} className="w-full h-12 rounded-xl bg-emerald-800 hover:bg-emerald-900 disabled:opacity-60 text-white font-semibold shadow-lg shadow-emerald-900/10 transition flex items-center justify-center gap-2">
-              {busy ? <RefreshCw size={17} className="animate-spin"/> : <LockKeyhole size={17}/>} {busy ? "Signing in…" : "Sign in"}
+              {busy ? <RefreshCw size={17} className="animate-spin" /> : <LockKeyhole size={17} />} {busy ? "Signing in…" : "Sign in"}
             </button>
           </form>
           <div className="mt-7 pt-5 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400"><span>SabziSetu Admin</span><span>Protected session</span></div>
@@ -3001,7 +3085,7 @@ export default function App() {
   const [notifications, setNotifications] = useState([]);
   const [salesTrend, setSalesTrend] = useState([]);
   const [summary, setSummary] = useState({ collected_today: 0 });
-  const [masters, setMasters] = useState({items:[],units:[],vendors:[],expenseCategories:[]});
+  const [masters, setMasters] = useState({ items: [], units: [], vendors: [], expenseCategories: [] });
 
   const loadAll = () => {
     setStatus("loading");
@@ -3050,7 +3134,7 @@ export default function App() {
   };
 
   const logout = async () => {
-    try { if (localStorage.getItem("sabzisetu-admin-token")) await api.logout(); } catch (_) {}
+    try { if (localStorage.getItem("sabzisetu-admin-token")) await api.logout(); } catch (_) { }
     localStorage.removeItem("sabzisetu-admin-token");
     setAdminUser(null); setAuthStatus("logged_out"); setStatus("loading");
   };
@@ -3095,7 +3179,7 @@ export default function App() {
   };
 
   if (authStatus === "checking") {
-    return <div className="min-h-screen bg-gray-50 flex items-center justify-center"><div className="text-center"><RefreshCw className="animate-spin mx-auto mb-3 text-green-700" size={28}/><p className="text-sm text-gray-500">Checking secure session…</p></div></div>;
+    return <div className="min-h-screen bg-gray-50 flex items-center justify-center"><div className="text-center"><RefreshCw className="animate-spin mx-auto mb-3 text-green-700" size={28} /><p className="text-sm text-gray-500">Checking secure session…</p></div></div>;
   }
   if (authStatus === "logged_out") return <LoginPage onLogin={handleLogin} />;
 
@@ -3140,23 +3224,43 @@ export default function App() {
     case "reports": content = <ReportsPage data={data} />; break;
     case "whatsapp": content = <WhatsAppPage bills={whatsappBills} setBills={setWhatsappBills} business={business} refresh={loadAll} />; break;
     case "notifications": content = <NotificationsPage notifications={notifications} setNotifications={setNotifications} data={data} refresh={loadAll} />; break;
-    case "settings": content = <SettingsPage business={business} setBusiness={setBusiness} masters={masters} stock={stock} mandiPurchases={mandiPurchases} localPurchases={localPurchases} sales={sales} refreshMasters={async()=>setMasters(await api.getMasters())} />; break;
+    case "settings": content = <SettingsPage business={business} setBusiness={setBusiness} masters={masters} stock={stock} mandiPurchases={mandiPurchases} localPurchases={localPurchases} sales={sales} refreshMasters={async () => setMasters(await api.getMasters())} />; break;
     case "backup": content = <BackupPage data={data} />; break;
     default: content = null;
   }
 
   return (
     <LanguageContext.Provider value={language}>
-    <div className="min-h-screen bg-gray-50 font-sans overflow-x-hidden">
-      <div className="flex min-h-screen">
-        <Sidebar page={page} setPage={setPage} business={business} mobileOpen={mobileNavOpen} setMobileOpen={setMobileNavOpen} user={adminUser} onLogout={logout} />
-        <main className="flex-1 min-w-0 md:ml-64 p-3 sm:p-4 md:p-6 max-w-[1400px]">
-          <Topbar page={page} setPage={setPage} business={business} notifications={notifications} setNotifications={setNotifications} data={data} onMenu={() => setMobileNavOpen(true)} language={language} setLanguage={setLanguage} />
-          {content}
-        </main>
+      <div
+        className="min-h-screen bg-gray-50 font-sans overflow-x-hidden"
+        style={{
+          "--theme-primary":
+            business?.themeColor ||
+            business?.theme_color ||
+            "#047857",
+
+          "--theme-primary-dark":
+            "color-mix(in srgb, var(--theme-primary) 82%, black)",
+
+          "--theme-primary-soft":
+            "color-mix(in srgb, var(--theme-primary) 10%, white)",
+
+          "--theme-primary-soft-hover":
+            "color-mix(in srgb, var(--theme-primary) 16%, white)",
+
+          "--theme-primary-border":
+            "color-mix(in srgb, var(--theme-primary) 30%, white)",
+        }}
+      >
+        <div className="flex min-h-screen">
+          <Sidebar page={page} setPage={setPage} business={business} mobileOpen={mobileNavOpen} setMobileOpen={setMobileNavOpen} user={adminUser} onLogout={logout} />
+          <main className="flex-1 min-w-0 md:ml-64 p-3 sm:p-4 md:p-6 max-w-[1400px]">
+            <Topbar page={page} setPage={setPage} business={business} notifications={notifications} setNotifications={setNotifications} data={data} onMenu={() => setMobileNavOpen(true)} language={language} setLanguage={setLanguage} />
+            {content}
+          </main>
+        </div>
+        <AppDialogHost />
       </div>
-      <AppDialogHost />
-    </div>
     </LanguageContext.Provider>
   );
 }

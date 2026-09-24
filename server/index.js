@@ -95,6 +95,10 @@ async function startServer() {
     await pool.query(`ALTER TABLE customers ADD COLUMN IF NOT EXISTS phone TEXT`);
     await pool.query(`ALTER TABLE business_settings ADD COLUMN IF NOT EXISTS whatsapp_send_all_enabled BOOLEAN NOT NULL DEFAULT true`);
     await pool.query(`ALTER TABLE business_settings ADD COLUMN IF NOT EXISTS low_stock_threshold_kg NUMERIC(14,3) NOT NULL DEFAULT 50`);
+    await pool.query(
+      `ALTER TABLE business_settings
+      ADD COLUMN IF NOT EXISTS theme_color TEXT NOT NULL DEFAULT '#047857'`
+    );
     await pool.query(`CREATE TABLE IF NOT EXISTS notifications (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), text TEXT NOT NULL, time TEXT, read BOOLEAN NOT NULL DEFAULT false, action_type TEXT, action_value TEXT, created_at TIMESTAMPTZ NOT NULL DEFAULT now(), notification_key TEXT, active BOOLEAN NOT NULL DEFAULT true, action_message TEXT)`);
     await pool.query(`ALTER TABLE notifications ADD COLUMN IF NOT EXISTS notification_key TEXT`);
     await pool.query(`ALTER TABLE notifications ADD COLUMN IF NOT EXISTS action_message TEXT`);

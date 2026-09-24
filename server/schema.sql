@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS business_settings (
   owner TEXT NOT NULL DEFAULT 'Owner',
   tagline TEXT NOT NULL DEFAULT 'Smart Trading, Higher Earning',
   currency TEXT NOT NULL DEFAULT '₹',
+  theme_color TEXT NOT NULL DEFAULT '#047857',
   whatsapp_send_all_enabled BOOLEAN NOT NULL DEFAULT true,
   low_stock_threshold_kg NUMERIC(14,3) NOT NULL DEFAULT 50 CHECK (low_stock_threshold_kg >= 0),
   CONSTRAINT single_row CHECK (id = 1)
@@ -22,7 +23,7 @@ CREATE TABLE IF NOT EXISTS stock (
   status TEXT NOT NULL DEFAULT 'Available',
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
-CREATE UNIQUE INDEX IF NOT EXISTS stock_item_unique_idx ON stock (lower(trim(item)));
+-- CREATE UNIQUE INDEX IF NOT EXISTS stock_item_unique_idx ON stock (lower(trim(item)));
 
 CREATE TABLE IF NOT EXISTS mandi_purchases (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -163,7 +164,7 @@ ALTER TABLE notifications ADD COLUMN IF NOT EXISTS action_message TEXT;
 ALTER TABLE notifications ADD COLUMN IF NOT EXISTS notification_key TEXT;
 ALTER TABLE notifications ADD COLUMN IF NOT EXISTS active BOOLEAN NOT NULL DEFAULT true;
 CREATE UNIQUE INDEX IF NOT EXISTS notifications_key_unique_idx ON notifications(notification_key) WHERE notification_key IS NOT NULL;
-CREATE UNIQUE INDEX IF NOT EXISTS stock_item_unique_idx ON stock (lower(trim(item)));
+-- CREATE UNIQUE INDEX IF NOT EXISTS stock_item_unique_idx ON stock (lower(trim(item)));
 CREATE UNIQUE INDEX IF NOT EXISTS customers_name_unique_idx ON customers (lower(trim(name)));
 
 -- Safe upgrade for customer contact numbers.
